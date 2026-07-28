@@ -2,7 +2,6 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { FeaturedProject } from "@/components/FeaturedProject";
-import { Tag } from "@/components/Tag";
 import { getPublishedProjects } from "@/lib/projects";
 
 export default async function Home() {
@@ -20,21 +19,28 @@ export default async function Home() {
       <Nav />
 
       {/* Hero */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-10">
+      <section className="relative min-h-[85vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
+        {/* Soft brand gradient — indigo from the logo, very low opacity */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 20% 40%, rgba(75, 58, 255, 0.09) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 50%)",
+          }}
+        />
+
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-6">
           Brand &amp; Visual Identity — Lagos, NG
         </p>
         <h1
-          className="spec-mark font-display font-extrabold text-[clamp(3.25rem,8.5vw,7.25rem)] leading-[0.9] tracking-tight"
+          className="spec-mark font-display font-extrabold text-[clamp(2.75rem,7.5vw,5.75rem)] leading-[1.05] tracking-tight max-w-4xl"
           data-spec-label="H1 — CLAMP"
         >
-          BRANDS,
-          <br />
-          TAGGED.
+          I design brands that get remembered.
         </h1>
-        <p className="font-body text-lg md:text-xl max-w-xl mt-10 text-ink/80">
+        <p className="font-body text-lg md:text-xl max-w-xl mt-8 text-ink/80">
           I design the identity, the visuals, the whole outfit.
-          <Tag>Toheeb, a.k.a dypixels</Tag>
         </p>
       </section>
 
@@ -42,7 +48,10 @@ export default async function Home() {
       {featured && <FeaturedProject project={featured} />}
 
       {/* Work grid */}
-      <section id="work" className="px-6 md:px-10 py-16 md:py-24 border-t border-line">
+      <section
+        id="work"
+        className="px-6 md:px-10 py-16 md:py-24 border-t border-line"
+      >
         <div className="flex items-baseline justify-between mb-12 md:mb-16">
           <h2 className="font-display text-2xl md:text-3xl">Selected work</h2>
           <span className="font-mono text-xs text-mute uppercase tracking-wider">
