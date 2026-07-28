@@ -114,3 +114,26 @@ html[data-spec="on"] .spec-mark {
 html[data-spec="on"] .spec-mark::after {
   display: block;
 }
+
+/* Hero ambient gradient — high-contrast, slowly moving */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 35%, rgba(75, 58, 255, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 90% 15%, rgba(37, 99, 235, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 60% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: gradient-shift 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient {
+    animation: none;
+    background-position: 30% 40%;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 40%; }
+  33% { background-position: 80% 20%; }
+  66% { background-position: 40% 80%; }
+}
