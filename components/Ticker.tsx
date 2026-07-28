@@ -5,7 +5,10 @@ export function Ticker() {
   const repeated = TICKER_TEXT.repeat(4);
 
   return (
-    <div className="w-full overflow-hidden bg-flash py-3">
+    <div
+      className="spec-mark w-full overflow-hidden bg-flash py-3 mb-10 md:mb-16"
+      data-spec-label="TICKER"
+    >
       <div className="ticker-track">
         <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-paper whitespace-nowrap pr-4">
           {repeated}

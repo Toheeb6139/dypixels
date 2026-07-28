@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 type SocialLink = {
   label: string;
   href: string;
@@ -34,8 +36,8 @@ export function SocialLinks({ compact = false }: { compact?: boolean }) {
             href={s.href}
             target={external ? "_blank" : undefined}
             rel={external ? "noopener noreferrer" : undefined}
-            style={{ transform: `rotate(${tilts[i % tilts.length]}deg)` }}
-            className={`docket inline-block bg-paper font-mono uppercase tracking-wider hover:text-flash hover:-translate-y-0.5 transition-all ${
+            style={{ "--tilt": `${tilts[i % tilts.length]}deg` } as CSSProperties}
+            className={`docket inline-block bg-paper font-mono uppercase tracking-wider hover:text-flash ${
               compact ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"
             }`}
           >

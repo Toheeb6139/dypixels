@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
+import { Schibsted_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SpecModeOverlay } from "@/components/SpecMode";
 
-const display = Bricolage_Grotesque({
+const display = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["500", "600", "700", "800"],

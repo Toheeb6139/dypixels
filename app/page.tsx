@@ -2,7 +2,6 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { FeaturedProject } from "@/components/FeaturedProject";
-import { Tag } from "@/components/Tag";
 import { Ticker } from "@/components/Ticker";
 import { Reveal } from "@/components/Reveal";
 import { getPublishedProjects } from "@/lib/projects";
@@ -18,7 +17,10 @@ export default async function Home() {
       <Nav />
 
       {/* Hero — the thesis of the page */}
-      <section className="min-h-[80vh] flex flex-col justify-center px-6 md:px-10">
+      <section
+        className="spec-mark min-h-[80vh] flex flex-col justify-center px-6 md:px-10"
+        data-spec-label="HERO"
+      >
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
           Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
         </p>
@@ -44,7 +46,6 @@ export default async function Home() {
 
         <p className="font-body text-lg md:text-xl max-w-xl mt-8 text-ink/80 leading-relaxed">
           I design the identity, the visuals, the whole outfit.
-          <Tag>Toheeb, a.k.a dypixels</Tag>
         </p>
       </section>
 
@@ -53,7 +54,11 @@ export default async function Home() {
       {featured && <FeaturedProject project={featured} />}
 
       {/* Work */}
-      <section id="work" className="px-6 md:px-10 py-16 md:py-24">
+      <section
+        id="work"
+        className="spec-mark px-6 md:px-10 py-16 md:py-24"
+        data-spec-label="WORK GRID"
+      >
         <div className="flex items-baseline justify-between mb-12">
           <h2 className="font-display text-2xl md:text-3xl">More work</h2>
           <span className="font-mono text-xs text-mute uppercase tracking-wider">
@@ -78,7 +83,8 @@ export default async function Home() {
           </p>
           <a
             href="/about"
-            className="font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
+            className="spec-mark font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
+            data-spec-label="ABOUT TEASER"
           >
             I studied engineering, then decided brands needed me more than
             circuits did. Here's the rest of the story →

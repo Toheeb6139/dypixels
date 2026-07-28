@@ -5,19 +5,22 @@ export function Footer() {
   return (
     <footer
       id="contact"
-      className="w-full px-6 md:px-10 py-16 mt-24 border-t border-line"
+      className="spec-mark w-full px-6 md:px-10 py-16 mt-24 border-t border-line"
+      data-spec-label="FOOTER"
     >
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-3">
             Currently — open for work
           </p>
-          <h2 className="font-display text-3xl md:text-5xl max-w-lg leading-[1.05]">
+          <h2 className="spec-mark font-display text-3xl md:text-5xl max-w-lg leading-[1.05]" data-spec-label="CTA">
             Got a brand that needs an outfit?
           </h2>
         </div>
 
-        <SocialLinks />
+        <div className="spec-mark" data-spec-label="SOCIAL LINKS">
+          <SocialLinks />
+        </div>
       </div>
 
       <div className="flex items-center justify-between mt-16 flex-wrap gap-4">

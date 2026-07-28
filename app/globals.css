@@ -33,11 +33,21 @@ body {
   outline-offset: 3px;
 }
 
-/* the docket tag — perforated hang-tag motif, the site's signature element */
+/* the docket tag — perforated hang-tag motif, the site's signature element.
+   Every docket rests at a slight tilt (--tilt, default -2deg) and flips
+   to the opposite angle on hover. Individual tags can override --tilt
+   inline for variety (see SocialLinks.tsx); anything that doesn't sits
+   at the default. */
 .docket {
   position: relative;
   border: 1px solid #16161b;
   border-radius: 2px;
+  transform: rotate(var(--tilt, -2deg));
+  transition: transform 0.25s ease;
+}
+
+.docket:hover {
+  transform: rotate(calc(var(--tilt, -2deg) * -1));
 }
 
 .docket::before {
