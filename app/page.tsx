@@ -20,26 +20,36 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="relative min-h-[85vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
+        {/* Gradient lives only inside the hero, stops short of the nav */}
         <div
           aria-hidden="true"
-          className="hero-gradient pointer-events-none absolute inset-0 -z-10"
+          className="hero-gradient pointer-events-none absolute left-0 right-0 bottom-0 top-0 -z-10"
         />
 
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-5 md:mb-6">
           Brand &amp; Visual Identity — Lagos, NG
         </p>
 
+        {/* Mobile: forced 4-line break. Desktop: natural flow */}
         <h1
           className="spec-mark font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
           data-spec-label="H1 — CLAMP"
         >
-          I design
-          <br />
-          <BrandsWord />
-          <br />
-          that get
-          <br />
-          remembered.
+          {/* Mobile version */}
+          <span className="md:hidden">
+            I design
+            <br />
+            <BrandsWord />
+            <br />
+            that get
+            <br />
+            remembered.
+          </span>
+
+          {/* Desktop version — single flowing block */}
+          <span className="hidden md:inline">
+            I design <BrandsWord /> that get remembered.
+          </span>
         </h1>
 
         <p className="font-body text-lg md:text-xl max-w-xl mt-8 text-ink/80 leading-relaxed">
