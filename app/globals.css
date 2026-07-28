@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #efede7;
+  color: #16161b;
+}
+
+::selection {
+  background-color: #4b3aff;
+  color: #efede7;
+}
+
+/* focus ring, kept visible everywhere for keyboard nav */
+:focus-visible {
+  outline: 2px solid #4b3aff;
+  outline-offset: 3px;
+}
+
+/* the docket tag — perforated hang-tag motif, the site's signature element */
+.docket {
+  position: relative;
+  border: 1px solid #16161b;
+  border-radius: 2px;
+}
+
+.docket::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #16161b;
+  border-radius: 50%;
+  background: #efede7;
+  transform: translateY(-50%);
+}
+
+.docket-dashed {
+  background-image: linear-gradient(to bottom, #16161b 55%, transparent 0%);
+  background-position: right;
+  background-size: 1px 8px;
+  background-repeat: repeat-y;
+}
+
+/* ===== SPEC MODE =====
+   A toggle (see components/SpecMode.tsx) flips this on: the site
+   reveals itself as a blueprint — dashed measurement outlines and
+   dimension labels on key elements, plus a faint column grid. Nods to
+   the engineering degree underneath the design one. Off by default,
+   inert until switched on, no effect on layout either way. */
+
+.spec-grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(75, 58, 255, 0.16) 0,
+    rgba(75, 58, 255, 0.16) 1px,
+    transparent 1px,
+    transparent calc(100% / 12)
+  );
+}
+
+html[data-spec="on"] .spec-grid-overlay {
+  opacity: 1;
+}
+
+.spec-mark {
+  position: relative;
+}
+
+html[data-spec="on"] .spec-mark {
+  outline: 1px dashed #4b3aff;
+  outline-offset: 6px;
+}
+
+.spec-mark::after {
+  content: attr(data-spec-label);
+  position: absolute;
+  top: -20px;
+  left: 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #4b3aff;
+  background: #efede7;
+  padding: 1px 5px;
+  white-space: nowrap;
+  display: none;
+}
+
+html[data-spec="on"] .spec-mark::after {
+  display: block;
+}
