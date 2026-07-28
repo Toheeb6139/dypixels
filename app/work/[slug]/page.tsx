@@ -65,7 +65,7 @@ export default async function ProjectPage({
               />
             )
           ) : (
-            <CoverPlaceholder title={project.title} />
+            <CoverPlaceholder title={project.title} variant="featured" />
           )}
         </div>
 
