@@ -43,7 +43,7 @@ export default async function ProjectPage({
           </div>
         </header>
 
-        <div className="relative w-full aspect-[16/10] bg-ink mb-10">
+        <div className="relative w-full aspect-[16/10] bg-paper mb-10 overflow-hidden">
           {project.cover_image ? (
             isVideoUrl(project.cover_image) ? (
               <video
@@ -65,7 +65,7 @@ export default async function ProjectPage({
               />
             )
           ) : (
-            <CoverPlaceholder title={project.title} />
+            <CoverPlaceholder title={project.title} variant="featured" />
           )}
         </div>
 

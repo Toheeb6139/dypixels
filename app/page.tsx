@@ -1,24 +1,32 @@
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
+import { FeaturedProject } from "@/components/FeaturedProject";
 import { Tag } from "@/components/Tag";
 import { getPublishedProjects } from "@/lib/projects";
 
 export default async function Home() {
   const projects = await getPublishedProjects();
 
+  // Prefer explicitly featured project (Koma Kitchen), fall back to first
+  const featured =
+    projects.find((p) => p.featured) ?? projects[0] ?? null;
+  const rest = featured
+    ? projects.filter((p) => p.id !== featured.id)
+    : projects;
+
   return (
     <>
       <Nav />
 
-      {/* Hero — the thesis of the page */}
+      {/* Hero */}
       <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-10">
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-6">
           Brand &amp; Visual Identity — Lagos, NG
         </p>
         <h1
-          className="spec-mark font-display font-extrabold text-[15vw] md:text-[8.5vw] leading-[0.88] tracking-tight"
-          data-spec-label="H1 — CLAMP(15VW, 8.5VW)"
+          className="spec-mark font-display font-extrabold text-[clamp(3.25rem,8.5vw,7.25rem)] leading-[0.9] tracking-tight"
+          data-spec-label="H1 — CLAMP"
         >
           BRANDS,
           <br />
@@ -30,17 +38,20 @@ export default async function Home() {
         </p>
       </section>
 
-      {/* Work */}
-      <section id="work" className="px-6 md:px-10 py-16 md:py-24">
-        <div className="flex items-baseline justify-between mb-12">
+      {/* Featured — immediately after hero */}
+      {featured && <FeaturedProject project={featured} />}
+
+      {/* Work grid */}
+      <section id="work" className="px-6 md:px-10 py-16 md:py-24 border-t border-line">
+        <div className="flex items-baseline justify-between mb-12 md:mb-16">
           <h2 className="font-display text-2xl md:text-3xl">Selected work</h2>
           <span className="font-mono text-xs text-mute uppercase tracking-wider">
-            {projects.length} project{projects.length === 1 ? "" : "s"}
+            {rest.length} project{rest.length === 1 ? "" : "s"}
           </span>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-x-12">
-          {projects.map((project) => (
+        <div className="grid md:grid-cols-2 gap-x-10 gap-y-14 md:gap-y-16">
+          {rest.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
@@ -56,7 +67,7 @@ export default async function Home() {
           className="font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
         >
           I studied engineering, then decided brands needed me more than
-          circuits did. Here's the rest of the story →
+          circuits did. Here&apos;s the rest of the story →
         </a>
       </section>
 
