@@ -19,8 +19,8 @@ export default async function Home() {
 
       {/* Hero — the thesis of the page */}
       <section className="min-h-[80vh] flex flex-col justify-center px-6 md:px-10">
-        <p className="font-mono text-xs uppercase tracking-widest text-mute mb-5 md:mb-6">
-          Brand &amp; Visual Identity — Lagos, NG
+        <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
+          Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
         </p>
 
         {/* Mobile: forced 4-line break. Desktop: natural flow */}

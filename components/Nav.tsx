@@ -12,9 +12,9 @@ export function Nav() {
         <Image
           src="/logo-mark.png"
           alt="dypixels"
-          width={36}
-          height={36}
-          className="h-8 w-8 sm:h-9 sm:w-9"
+          width={48}
+          height={48}
+          className="h-10 w-10 sm:h-12 sm:w-12"
           priority
         />
       </Link>
