@@ -9,6 +9,7 @@ const config: Config = {
         ink: "#16161B", // near-black, warm dark
         flash: "#4B3AFF", // signature electric indigo
         flag: "#FF4433", // small dose of wit — errors, hovers, tiny accents
+        spark: "#FFC53D", // warm yellow accent — grommet circles, footer highlight
         mute: "#8C8A90", // meta / caption grey
         line: "#D9D6CD", // hairline dividers
       },

@@ -25,7 +25,13 @@ const socials: SocialLink[] = [
 // renders rather than random on every load.
 const tilts = [-2, 1.5, -1, 2, -1.5, 1, -2.5, 1.5];
 
-export function SocialLinks({ compact = false }: { compact?: boolean }) {
+export function SocialLinks({
+  compact = false,
+  inverted = false,
+}: {
+  compact?: boolean;
+  inverted?: boolean;
+}) {
   return (
     <div className="flex flex-wrap gap-3">
       {socials.map((s, i) => {
@@ -37,9 +43,11 @@ export function SocialLinks({ compact = false }: { compact?: boolean }) {
             target={external ? "_blank" : undefined}
             rel={external ? "noopener noreferrer" : undefined}
             style={{ "--tilt": `${tilts[i % tilts.length]}deg` } as CSSProperties}
-            className={`docket inline-block bg-paper font-mono uppercase tracking-wider hover:text-flash ${
-              compact ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"
-            }`}
+            className={`docket inline-block font-mono uppercase tracking-wider transition-colors ${
+              inverted
+                ? "docket-inverted bg-transparent text-paper hover:text-spark"
+                : "bg-paper text-ink hover:text-flash"
+            } ${compact ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"}`}
           >
             {s.label}
           </a>

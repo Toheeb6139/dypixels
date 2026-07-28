@@ -40,14 +40,17 @@ body {
    at the default. */
 .docket {
   position: relative;
-  border: 1px solid #16161b;
+  border: 1px solid var(--docket-border, #16161b);
   border-radius: 2px;
   transform: rotate(var(--tilt, -2deg));
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 1px 2px 3px rgba(22, 22, 27, 0.1);
+  font-weight: 600;
 }
 
 .docket:hover {
   transform: rotate(calc(var(--tilt, -2deg) * -1));
+  box-shadow: 1px 3px 6px rgba(22, 22, 27, 0.16);
 }
 
 .docket::before {
@@ -57,10 +60,18 @@ body {
   top: 50%;
   width: 8px;
   height: 8px;
-  border: 1px solid #16161b;
+  border: 1px solid var(--docket-circle-border, #16161b);
   border-radius: 50%;
-  background: #efede7;
+  background: var(--docket-circle-bg, #efede7);
   transform: translateY(-50%);
+}
+
+/* Inverted variant — for tags sitting on the indigo footer band: white
+   border instead of ink, yellow grommet instead of paper-toned. */
+.docket-inverted {
+  --docket-border: #efede7;
+  --docket-circle-border: #ffc53d;
+  --docket-circle-bg: #ffc53d;
 }
 
 .docket-dashed {

@@ -26,7 +26,7 @@ export function SpecModeToggle() {
     <button
       onClick={toggle}
       aria-pressed={on}
-      className="docket inline-flex items-center gap-2 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider hover:text-flash transition-colors"
+      className="docket inline-flex items-center gap-2 px-3 py-1.5 bg-paper text-ink font-mono text-[11px] uppercase tracking-wider hover:text-flash transition-colors"
     >
       <span
         className={`w-1.5 h-1.5 rounded-full transition-colors ${
