@@ -116,15 +116,14 @@ html[data-spec="on"] .spec-mark::after {
 }
 
 /* Hero ambient gradient
-   - Contained inside hero only (does not touch nav)
-   - Soft top fade so it never meets the header
-   - Colour-shifting blobs via independent slow transforms (GPU-friendly)
+   - No indigo — soft multi-colour wash
+   - Contained in hero, soft top fade so it never touches the nav
+   - GPU-friendly transforms only
 */
 .hero-gradient {
   overflow: hidden;
-  /* Soft fade at the very top so gradient never touches the nav */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 100%);
 }
 
 .hero-gradient::before,
@@ -132,59 +131,60 @@ html[data-spec="on"] .spec-mark::after {
   content: "";
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   will-change: transform;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+  opacity: 0.55;
 }
 
-/* Primary indigo blob */
+/* Soft warm rose / peach */
 .hero-gradient::before {
+  width: 60%;
+  height: 55%;
+  top: 20%;
+  left: -8%;
+  background: rgba(251, 146, 160, 0.35);
+  animation: blob-a 20s ease-in-out infinite;
+}
+
+/* Soft sky / mint */
+.hero-gradient::after {
   width: 55%;
   height: 50%;
-  top: 18%;
-  left: -5%;
-  background: rgba(75, 58, 255, 0.28);
-  animation: blob-a 18s ease-in-out infinite;
-}
-
-/* Secondary blue / cyan blob */
-.hero-gradient::after {
-  width: 50%;
-  height: 45%;
-  top: 8%;
-  right: -8%;
-  background: rgba(14, 165, 233, 0.22);
-  animation: blob-b 22s ease-in-out infinite;
+  top: 10%;
+  right: -10%;
+  background: rgba(125, 211, 252, 0.32);
+  animation: blob-b 24s ease-in-out infinite;
 }
 
 @keyframes blob-a {
   0%, 100% {
     transform: translate(0, 0) scale(1);
-    background: rgba(75, 58, 255, 0.28);
+    background: rgba(251, 146, 160, 0.35);
   }
   33% {
-    transform: translate(18%, 12%) scale(1.15);
-    background: rgba(99, 102, 241, 0.26);
+    transform: translate(14%, 10%) scale(1.12);
+    background: rgba(253, 186, 116, 0.3);
   }
   66% {
-    transform: translate(8%, 22%) scale(0.95);
-    background: rgba(139, 92, 246, 0.24);
+    transform: translate(6%, 18%) scale(0.96);
+    background: rgba(244, 114, 182, 0.28);
   }
 }
 
 @keyframes blob-b {
   0%, 100% {
     transform: translate(0, 0) scale(1);
-    background: rgba(14, 165, 233, 0.22);
+    background: rgba(125, 211, 252, 0.32);
   }
   40% {
-    transform: translate(-20%, 18%) scale(1.2);
-    background: rgba(59, 130, 246, 0.2);
+    transform: translate(-16%, 14%) scale(1.15);
+    background: rgba(167, 243, 208, 0.28);
   }
   70% {
-    transform: translate(-8%, 8%) scale(0.9);
-    background: rgba(6, 182, 212, 0.18);
+    transform: translate(-6%, 6%) scale(0.92);
+    background: rgba(196, 181, 253, 0.26);
   }
 }
 
@@ -192,11 +192,12 @@ html[data-spec="on"] .spec-mark::after {
   .hero-gradient::before,
   .hero-gradient::after {
     animation: none;
+    opacity: 0.4;
   }
   .hero-gradient::before {
-    transform: translate(5%, 10%) scale(1.05);
+    transform: translate(4%, 8%) scale(1.05);
   }
   .hero-gradient::after {
-    transform: translate(-10%, 5%) scale(1.05);
+    transform: translate(-8%, 4%) scale(1.05);
   }
 }
