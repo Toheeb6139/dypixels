@@ -4,13 +4,14 @@ import { notFound } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CoverPlaceholder } from "@/components/CoverPlaceholder";
-import { getProjectBySlug, getPublishedProjects } from "@/lib/projects";
+import { getProjectBySlug } from "@/lib/projects";
 import { isVideoUrl } from "@/lib/media";
 
-export async function generateStaticParams() {
-  const projects = await getPublishedProjects();
-  return projects.map((p) => ({ slug: p.slug }));
-}
+// Always fetch live from the database — same reasoning as the
+// homepage: correctness (a draft never leaking, a publish always
+// showing immediately) matters far more than static-generation speed
+// for a portfolio site's traffic level.
+export const dynamic = "force-dynamic";
 
 export default async function ProjectPage({
   params,

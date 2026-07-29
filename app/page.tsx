@@ -6,10 +6,17 @@ import { Ticker } from "@/components/Ticker";
 import { Reveal } from "@/components/Reveal";
 import { getPublishedProjects } from "@/lib/projects";
 
+// Always fetch live from the database — no static caching layer that
+// can drift out of sync with what's actually toggled in /admin.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const projects = await getPublishedProjects();
 
-  const featured = projects.find((p) => p.featured) ?? projects[0] ?? null;
+  // Strictly follows the Featured toggle: if nothing is marked
+  // featured, nothing gets the spotlight slot — no automatic fallback
+  // pick of "whatever's first."
+  const featured = projects.find((p) => p.featured) ?? null;
   const rest = featured ? projects.filter((p) => p.id !== featured.id) : projects;
 
   return (
