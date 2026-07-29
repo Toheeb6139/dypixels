@@ -19,14 +19,19 @@ export function BackToTop() {
   }
 
   return (
-    <button
-      onClick={scrollToTop}
-      aria-label="Back to top"
-      className={`docket fixed bottom-6 left-6 z-40 w-11 h-11 flex items-center justify-center bg-paper font-mono text-sm hover:text-flash ${
+    <div
+      className={`fixed bottom-6 left-6 z-40 ${
         visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
+      style={{ transition: "opacity 0.3s ease" }}
     >
-      ↑
-    </button>
+      <button
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        className="docket w-11 h-11 flex items-center justify-center bg-paper font-mono text-sm hover:text-flash"
+      >
+        ↑
+      </button>
+    </div>
   );
 }
