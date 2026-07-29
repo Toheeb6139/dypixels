@@ -12,8 +12,12 @@ export default function About() {
           The person behind the tag
         </p>
 
-        <h1 className="font-display text-4xl md:text-6xl max-w-3xl leading-[1.02] mb-6">
-          I'm Toheeb — dypixels is just what I call it when I'm working.
+        <h1
+          className="spec-mark font-display text-4xl md:text-6xl max-w-3xl leading-[1.02] mb-6"
+          data-spec-label="H1"
+        >
+          I'm Toheeb — <span className="text-flash font-extrabold">dypixels</span> is
+          just what I call it when I'm working.
         </h1>
 
         <a
@@ -25,7 +29,10 @@ export default function About() {
         </a>
 
         <div className="grid md:grid-cols-3 gap-12">
-          <div className="md:col-span-2 font-body text-lg leading-relaxed text-ink/85 space-y-6 max-w-xl">
+          <div
+            className="spec-mark md:col-span-2 font-body text-base leading-snug text-ink/85 space-y-4 max-w-xl"
+            data-spec-label="BIO"
+          >
             <p>
               I'm finishing a degree in Electronic and Computer Engineering
               at Lagos State University — the kind of course that teaches
@@ -64,7 +71,10 @@ export default function About() {
             </p>
           </div>
 
-          <div className="font-mono text-sm space-y-8">
+          <div
+            className="spec-mark font-mono text-sm space-y-8"
+            data-spec-label="META"
+          >
             <div>
               <p className="text-mute uppercase tracking-wider text-xs mb-2">
                 Based in

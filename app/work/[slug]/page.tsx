@@ -33,7 +33,10 @@ export default async function ProjectPage({
         </Link>
 
         <header className="mt-8 mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <h1 className="font-display text-4xl md:text-6xl leading-[0.95] max-w-3xl">
+          <h1
+            className="spec-mark font-display text-4xl md:text-6xl leading-[0.95] max-w-3xl"
+            data-spec-label="PROJECT TITLE"
+          >
             {project.title}
           </h1>
           <div className="flex gap-2 flex-wrap font-mono text-[11px] uppercase tracking-wider text-mute">
@@ -43,7 +46,10 @@ export default async function ProjectPage({
           </div>
         </header>
 
-        <div className="relative w-full aspect-[16/10] bg-ink mb-10">
+        <div
+          className="spec-mark relative w-full aspect-[16/10] bg-ink mb-10"
+          data-spec-label="COVER — 16:10"
+        >
           {project.cover_image ? (
             isVideoUrl(project.cover_image) ? (
               <video
@@ -69,12 +75,18 @@ export default async function ProjectPage({
           )}
         </div>
 
-        <div className="max-w-2xl font-body text-lg leading-relaxed whitespace-pre-line text-ink/85">
+        <div
+          className="spec-mark max-w-2xl font-body text-lg leading-relaxed whitespace-pre-line text-ink/85"
+          data-spec-label="DESCRIPTION"
+        >
           {project.description}
         </div>
 
         {project.gallery.length > 0 && (
-          <div className="grid md:grid-cols-2 gap-6 mt-16">
+          <div
+            className="spec-mark grid md:grid-cols-2 gap-6 mt-16"
+            data-spec-label="GALLERY"
+          >
             {project.gallery.map((src, i) =>
               isVideoUrl(src) ? (
                 <div key={i} className="relative w-full aspect-[4/3] bg-ink">
