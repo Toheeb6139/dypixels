@@ -2,6 +2,10 @@ import { supabaseAdmin, isAdminConfigured } from "@/lib/supabaseAdmin";
 import { Project, Lead } from "@/lib/types";
 import { DashboardClient } from "./DashboardClient";
 
+// This page shows live projects and lead submissions behind a login —
+// it should never be served from a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export default async function Dashboard() {
   if (!isAdminConfigured()) {
     return (

@@ -24,11 +24,15 @@ export async function getPublishedProjects(): Promise<Project[]> {
     .eq("published", true)
     .order("sort_order", { ascending: true });
 
-  if (error || !data || data.length === 0) {
+  if (error) {
+    // A real connection/config problem — fall back so the site doesn't
+    // show nothing. An empty result (no rows published yet) is NOT an
+    // error and should NOT trigger this — it should show as empty.
+    console.error("getPublishedProjects error:", error.message);
     return sortProjects(placeholderProjects);
   }
 
-  return data as Project[];
+  return (data as Project[]) ?? [];
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
@@ -43,7 +47,13 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     .eq("published", true)
     .single();
 
-  if (error || !data) {
+  if (error) {
+    // PGRST116 = "no rows found" — a real, expected outcome for a
+    // draft or nonexistent slug, not a connection problem. Let it 404
+    // instead of masking it with placeholder content.
+    if (error.code === "PGRST116") return null;
+
+    console.error("getProjectBySlug error:", error.message);
     return placeholderProjects.find((p) => p.slug === slug) ?? null;
   }
 

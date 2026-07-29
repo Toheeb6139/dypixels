@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { isSupabaseConfigured } from "@/lib/projects";
 
@@ -28,5 +29,6 @@ export async function submitLead(data: {
     return { ok: false, reason: "error", message: error.message };
   }
 
+  revalidatePath("/admin/dashboard");
   return { ok: true };
 }
