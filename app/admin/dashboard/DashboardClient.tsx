@@ -26,6 +26,23 @@ const emptyDraft: Partial<ProjectInput> = {
   sort_order: 999,
 };
 
+// Defensive: handles gallery being null/missing, the old string[] shape
+// from before this format existed, and stray null entries from a
+// not-yet-migrated database — so the admin UI never crashes on messy
+// data, it just quietly cleans it up.
+function normalizeGallery(gallery: unknown): GalleryItem[] {
+  if (!Array.isArray(gallery)) return [];
+  return gallery
+    .filter((item): item is NonNullable<typeof item> => item != null)
+    .map((item) =>
+      typeof item === "string" ? { url: item, layout: "half" as const } : item
+    )
+    .filter(
+      (item): item is GalleryItem =>
+        typeof item?.url === "string" && item.url.length > 0
+    );
+}
+
 export function DashboardClient({
   projects,
   leads,
@@ -211,7 +228,7 @@ function ProjectForm({
   const [form, setForm] = useState<Partial<ProjectInput>>({
     ...emptyDraft,
     ...draft,
-    gallery: draft.gallery ?? [],
+    gallery: normalizeGallery(draft.gallery),
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);

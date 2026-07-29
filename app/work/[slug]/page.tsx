@@ -82,40 +82,56 @@ export default async function ProjectPage({
           {project.description}
         </div>
 
-        {project.gallery.length > 0 && (
-          <div
-            className="spec-mark grid md:grid-cols-2 gap-6 mt-16"
-            data-spec-label="GALLERY"
-          >
-            {project.gallery.map((item, i) => (
-              <div
-                key={i}
-                className={`relative w-full aspect-[4/3] bg-ink ${
-                  item.layout === "full" ? "md:col-span-2 md:aspect-[16/9]" : ""
-                }`}
-              >
-                {isVideoUrl(item.url) ? (
-                  <video
-                    src={item.url}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <Image
-                    src={item.url}
-                    alt={`${project.title} detail ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes={item.layout === "full" ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+        {(() => {
+          // Defensive normalization: handles gallery being missing/null
+          // entirely, the old string[] shape, stray null entries from a
+          // not-yet-migrated database, and anything else malformed — so
+          // a messy DB state never takes down the build.
+          const rawGallery = Array.isArray(project.gallery) ? project.gallery : [];
+          const galleryItems = rawGallery
+            .filter((item): item is NonNullable<typeof item> => item != null)
+            .map((item) =>
+              typeof item === "string" ? { url: item, layout: "half" as const } : item
+            )
+            .filter((item) => typeof item?.url === "string" && item.url.length > 0);
+
+          if (galleryItems.length === 0) return null;
+
+          return (
+            <div
+              className="spec-mark grid md:grid-cols-2 gap-6 mt-16"
+              data-spec-label="GALLERY"
+            >
+              {galleryItems.map((item, i) => (
+                <div
+                  key={i}
+                  className={`relative w-full aspect-[4/3] bg-ink ${
+                    item.layout === "full" ? "md:col-span-2 md:aspect-[16/9]" : ""
+                  }`}
+                >
+                  {isVideoUrl(item.url) ? (
+                    <video
+                      src={item.url}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={item.url}
+                      alt={`${project.title} detail ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes={item.layout === "full" ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          );
+        })()}
       </article>
 
       <Footer />
