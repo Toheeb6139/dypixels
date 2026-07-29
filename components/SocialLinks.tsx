@@ -28,13 +28,17 @@ const tilts = [-2, 1.5, -1, 2, -1.5, 1, -2.5, 1.5];
 export function SocialLinks({
   compact = false,
   inverted = false,
+  only,
 }: {
   compact?: boolean;
   inverted?: boolean;
+  only?: string[];
 }) {
+  const items = only ? socials.filter((s) => only.includes(s.label)) : socials;
+
   return (
     <div className="flex flex-wrap gap-3">
-      {socials.map((s, i) => {
+      {items.map((s, i) => {
         const external = s.href.startsWith("http");
         return (
           <a

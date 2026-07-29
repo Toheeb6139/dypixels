@@ -34,3 +34,21 @@ on conflict (id) do nothing;
 create policy "public can view project images"
   on storage.objects for select
   using (bucket_id = 'project-images');
+
+-- Leads from the contact form on /about. Public can INSERT (submit an
+-- inquiry) but never SELECT — nobody can read other people's messages
+-- through the public API. You read leads through /admin, which uses
+-- the service role key and bypasses RLS.
+create table if not exists leads (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  message text not null,
+  created_at timestamptz default now()
+);
+
+alter table leads enable row level security;
+
+create policy "public can submit a lead"
+  on leads for insert
+  with check (true);

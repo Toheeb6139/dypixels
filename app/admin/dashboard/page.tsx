@@ -1,5 +1,5 @@
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabaseAdmin";
-import { Project } from "@/lib/types";
+import { Project, Lead } from "@/lib/types";
 import { DashboardClient } from "./DashboardClient";
 
 export default async function Dashboard() {
@@ -20,10 +20,20 @@ export default async function Dashboard() {
     );
   }
 
-  const { data } = await supabaseAdmin
+  const { data: projects } = await supabaseAdmin
     .from("projects")
     .select("*")
     .order("sort_order", { ascending: true });
 
-  return <DashboardClient projects={(data as Project[]) ?? []} />;
+  const { data: leads } = await supabaseAdmin
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  return (
+    <DashboardClient
+      projects={(projects as Project[]) ?? []}
+      leads={(leads as Lead[]) ?? []}
+    />
+  );
 }
