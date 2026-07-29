@@ -10,12 +10,29 @@ create table if not exists projects (
   summary text default '',
   description text default '',
   cover_image text,
-  gallery text[] default '{}',
+  -- Each gallery item is {"url": "...", "layout": "full" | "half"}.
+  -- "full" spans the whole width (a single hero shot or video), "half"
+  -- sits side-by-side with another "half" item, forming a 2-up grid.
+  gallery jsonb default '[]'::jsonb,
   featured boolean default false,
   sort_order int default 999,
   published boolean default false,
   created_at timestamptz default now()
 );
+
+-- Already created the table before this column type changed? Run this
+-- instead of the create table above (safe to run even if gallery is
+-- already empty):
+--   alter table projects alter column gallery type jsonb using (
+--     case
+--       when gallery is null then '[]'::jsonb
+--       else (
+--         select coalesce(jsonb_agg(jsonb_build_object('url', g, 'layout', 'half')), '[]'::jsonb)
+--         from unnest(gallery) as g
+--       )
+--     end
+--   );
+--   alter table projects alter column gallery set default '[]'::jsonb;
 
 -- Row Level Security: the public site can only ever read published rows.
 -- All writes happen through the admin dashboard, which uses the service

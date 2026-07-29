@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Project, ProjectInput, Lead } from "@/lib/types";
+import { Project, ProjectInput, Lead, GalleryItem } from "@/lib/types";
 import {
   createProject,
   updateProject,
@@ -73,6 +73,7 @@ export function DashboardClient({
             setOpenId(null);
             router.refresh();
           }}
+          onFieldSaved={() => router.refresh()}
         />
       )}
 
@@ -88,6 +89,11 @@ export function DashboardClient({
                 <span className="font-mono text-xs text-mute ml-2">
                   {p.published ? "published" : "draft"}
                 </span>
+                {p.featured && (
+                  <span className="font-mono text-xs text-flash ml-2">
+                    ★ featured
+                  </span>
+                )}
               </span>
               <span className="font-mono text-xs text-mute">
                 {openId === p.id ? "−" : "+"}
@@ -103,6 +109,7 @@ export function DashboardClient({
                     setOpenId(null);
                     router.refresh();
                   }}
+                  onFieldSaved={() => router.refresh()}
                   onDeleted={() => {
                     setOpenId(null);
                     router.refresh();
@@ -192,11 +199,13 @@ function ProjectForm({
   draft,
   existingId,
   onSaved,
+  onFieldSaved,
   onDeleted,
 }: {
   draft: Partial<Project>;
   existingId?: string;
   onSaved: () => void;
+  onFieldSaved: () => void;
   onDeleted?: () => void;
 }) {
   const [form, setForm] = useState<Partial<ProjectInput>>({
@@ -208,9 +217,36 @@ function ProjectForm({
   const [uploading, setUploading] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [autoSaveNote, setAutoSaveNote] = useState<string | null>(null);
 
   function set<K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) {
     setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  // Saves a single field immediately for an existing project — used for
+  // toggles and uploads, so nothing depends on remembering to scroll
+  // down and click the big Save button. New (not-yet-created) projects
+  // just update local state until the first Save creates the row.
+  async function autoSave(partial: Partial<ProjectInput>) {
+    if (!existingId) return;
+    try {
+      await updateProject(existingId, partial);
+      setAutoSaveNote("Saved ✓");
+      onFieldSaved();
+      setTimeout(() => setAutoSaveNote(null), 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Autosave failed.");
+    }
+  }
+
+  async function handlePublishedChange(checked: boolean) {
+    set("published", checked);
+    await autoSave({ published: checked });
+  }
+
+  async function handleFeaturedChange(checked: boolean) {
+    set("featured", checked);
+    await autoSave({ featured: checked });
   }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -223,6 +259,7 @@ function ProjectForm({
       fd.append("file", file);
       const url = await uploadProjectImage(fd);
       set("cover_image", url);
+      await autoSave({ cover_image: url });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");
     } finally {
@@ -239,7 +276,9 @@ function ProjectForm({
       const fd = new FormData();
       fd.append("file", file);
       const url = await uploadProjectImage(fd);
-      setForm((f) => ({ ...f, gallery: [...(f.gallery ?? []), url] }));
+      const nextGallery = [...(form.gallery ?? []), { url, layout: "half" as const }];
+      set("gallery", nextGallery);
+      await autoSave({ gallery: nextGallery });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");
     } finally {
@@ -248,11 +287,18 @@ function ProjectForm({
     }
   }
 
-  function removeGalleryItem(index: number) {
-    setForm((f) => ({
-      ...f,
-      gallery: (f.gallery ?? []).filter((_, i) => i !== index),
-    }));
+  async function removeGalleryItem(index: number) {
+    const nextGallery = (form.gallery ?? []).filter((_, i) => i !== index);
+    set("gallery", nextGallery);
+    await autoSave({ gallery: nextGallery });
+  }
+
+  async function setGalleryLayout(index: number, layout: GalleryItem["layout"]) {
+    const nextGallery = (form.gallery ?? []).map((item, i) =>
+      i === index ? { ...item, layout } : item
+    );
+    set("gallery", nextGallery);
+    await autoSave({ gallery: nextGallery });
   }
 
   async function handleSave() {
@@ -336,6 +382,7 @@ function ProjectForm({
       <p className="font-mono text-[10px] text-mute mb-1">
         Images (jpg, png, webp) or short clips (mp4, webm) — avoid GIF if
         you can; convert to webm first, same look, much smaller file.
+        {existingId ? " Saves immediately on upload." : " Save the project first to unlock instant upload saving."}
       </p>
       <div className="flex items-center gap-3">
         <input
@@ -351,6 +398,11 @@ function ProjectForm({
       )}
 
       <label className={labelClass}>Gallery (optional — extra shots on the project page)</label>
+      <p className="font-mono text-[10px] text-mute mb-1">
+        Pick "Full" for a single large image or video spanning the whole
+        width, or "Half" to sit side-by-side with another item in a
+        2-up grid. Mix and match freely.
+      </p>
       <div className="flex items-center gap-3">
         <input
           type="file"
@@ -361,10 +413,32 @@ function ProjectForm({
         {uploadingGallery && <span className="font-mono text-xs text-mute">Uploading…</span>}
       </div>
       {(form.gallery ?? []).length > 0 && (
-        <ul className="mt-2 space-y-1">
-          {(form.gallery ?? []).map((url, i) => (
-            <li key={i} className="flex items-center gap-2">
-              <span className="font-mono text-[11px] text-mute break-all flex-1">{url}</span>
+        <ul className="mt-2 space-y-2">
+          {(form.gallery ?? []).map((item, i) => (
+            <li key={i} className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
+                {item.url}
+              </span>
+              <div className="flex border border-line shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setGalleryLayout(i, "half")}
+                  className={`font-mono text-[10px] uppercase px-2 py-1 ${
+                    item.layout === "half" ? "bg-flash text-paper" : "text-mute"
+                  }`}
+                >
+                  Half
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGalleryLayout(i, "full")}
+                  className={`font-mono text-[10px] uppercase px-2 py-1 border-l border-line ${
+                    item.layout === "full" ? "bg-flash text-paper" : "text-mute"
+                  }`}
+                >
+                  Full
+                </button>
+              </div>
               <button
                 type="button"
                 onClick={() => removeGalleryItem(i)}
@@ -382,7 +456,7 @@ function ProjectForm({
           <input
             type="checkbox"
             checked={form.published}
-            onChange={(e) => set("published", e.target.checked)}
+            onChange={(e) => handlePublishedChange(e.target.checked)}
           />
           Published
         </label>
@@ -390,11 +464,25 @@ function ProjectForm({
           <input
             type="checkbox"
             checked={form.featured}
-            onChange={(e) => set("featured", e.target.checked)}
+            onChange={(e) => handleFeaturedChange(e.target.checked)}
           />
           Featured
         </label>
+        {autoSaveNote && (
+          <span className="font-mono text-xs text-flash">{autoSaveNote}</span>
+        )}
       </div>
+      {!existingId && (
+        <p className="font-mono text-[10px] text-mute mt-2">
+          Save the project first — toggles here will apply once you do.
+        </p>
+      )}
+      {existingId && (
+        <p className="font-mono text-[10px] text-mute mt-2">
+          Only one project can be featured at a time on the homepage —
+          checking this here doesn't automatically uncheck others.
+        </p>
+      )}
 
       {error && <p className="font-mono text-xs text-flag mt-4">{error}</p>}
 
@@ -404,7 +492,7 @@ function ProjectForm({
           disabled={saving || !form.title}
           className="docket px-4 py-2 font-mono text-xs uppercase tracking-wider hover:text-flash transition-colors disabled:opacity-40"
         >
-          {saving ? "Saving…" : "Save"}
+          {saving ? "Saving…" : existingId ? "Save text changes" : "Create project"}
         </button>
         {existingId && (
           <button

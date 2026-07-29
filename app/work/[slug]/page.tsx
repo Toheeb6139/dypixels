@@ -87,30 +87,33 @@ export default async function ProjectPage({
             className="spec-mark grid md:grid-cols-2 gap-6 mt-16"
             data-spec-label="GALLERY"
           >
-            {project.gallery.map((src, i) =>
-              isVideoUrl(src) ? (
-                <div key={i} className="relative w-full aspect-[4/3] bg-ink">
+            {project.gallery.map((item, i) => (
+              <div
+                key={i}
+                className={`relative w-full aspect-[4/3] bg-ink ${
+                  item.layout === "full" ? "md:col-span-2 md:aspect-[16/9]" : ""
+                }`}
+              >
+                {isVideoUrl(item.url) ? (
                   <video
-                    src={src}
+                    src={item.url}
                     autoPlay
                     loop
                     muted
                     playsInline
                     className="absolute inset-0 w-full h-full object-cover"
                   />
-                </div>
-              ) : (
-                <div key={i} className="relative w-full aspect-[4/3] bg-ink">
+                ) : (
                   <Image
-                    src={src}
+                    src={item.url}
                     alt={`${project.title} detail ${i + 1}`}
                     fill
                     className="object-cover"
-                    sizes="(min-width: 768px) 50vw, 100vw"
+                    sizes={item.layout === "full" ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
                   />
-                </div>
-              )
-            )}
+                )}
+              </div>
+            ))}
           </div>
         )}
       </article>

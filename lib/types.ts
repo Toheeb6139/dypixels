@@ -1,3 +1,8 @@
+export type GalleryItem = {
+  url: string;
+  layout: "full" | "half"; // full = spans the whole width (single hero shot/video); half = sits side-by-side in a 2-up grid
+};
+
 export type Project = {
   id: string;
   slug: string;
@@ -8,7 +13,7 @@ export type Project = {
   summary: string; // one or two sentences, shown on the card
   description: string; // longer body copy for the project page, supports line breaks
   cover_image: string | null; // URL
-  gallery: string[]; // additional image URLs
+  gallery: GalleryItem[]; // additional images/videos, each with its own layout
   featured: boolean;
   sort_order: number;
   published: boolean;
