@@ -58,7 +58,9 @@ Opens at `localhost:3000`, using placeholder projects — no setup required.
 ## Connecting Supabase (when you're ready to manage real content)
 
 1. Create a free project at supabase.com.
-2. In the SQL Editor, paste and run `supabase/schema.sql`. Optionally
+2. In the SQL Editor, paste and run `supabase/schema.sql` (this also
+   creates the `leads` table the contact form on /about writes to).
+   Optionally
    also run `supabase/seed.sql` to start from the placeholder projects
    instead of an empty table.
 3. In Project Settings → API, copy your Project URL, `anon` public key,
@@ -84,6 +86,12 @@ Opens at `localhost:3000`, using placeholder projects — no setup required.
    through `/admin` updates the live site without touching code at all.
 5. `/admin` is password-gated using `ADMIN_PASSWORD` — bookmark
    `yoursite.vercel.app/admin` on your phone.
+
+**About the contact form:** the form on `/about` tries to save
+submissions to the `leads` table in Supabase, viewable in `/admin`.
+Until Supabase is connected, it falls back to opening a pre-filled
+email instead — so it's never broken, just less convenient until step
+5 above is done.
 
 ## Asset checklist — what I need from you per project
 

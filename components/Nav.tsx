@@ -3,19 +3,28 @@ import Image from "next/image";
 
 export function Nav() {
   return (
-    <header className="w-full px-4 sm:px-6 md:px-10 py-4 md:py-5 flex items-center justify-between gap-3 relative z-20">
-      <Link href="/" className="relative shrink-0 block" aria-label="dypixels home">
+    <header
+      className="spec-mark w-full px-4 sm:px-6 md:px-10 py-5 md:py-6 flex items-center justify-between gap-3"
+      data-spec-label="NAV"
+    >
+      <Link
+        href="/"
+        className="spec-mark inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"
+        data-spec-label="LOGOMARK"
+      >
         <Image
           src="/logo-mark.png"
           alt="dypixels"
-          width={44}
-          height={44}
-          className="w-9 h-9 sm:w-10 sm:h-10 object-contain object-top"
+          width={48}
+          height={48}
+          className="h-10 w-10 sm:h-12 sm:w-12"
           priority
         />
       </Link>
-
-      <nav className="flex items-center gap-3 sm:gap-5 md:gap-6 font-mono text-[10px] sm:text-xs uppercase tracking-wider">
+      <nav
+        className="spec-mark flex items-center gap-3 sm:gap-5 md:gap-6 font-mono text-[10px] sm:text-xs uppercase tracking-wider"
+        data-spec-label="NAV LINKS"
+      >
         <Link href="/#work" className="hover:text-flash transition-colors">
           Work
         </Link>

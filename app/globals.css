@@ -33,11 +33,24 @@ body {
   outline-offset: 3px;
 }
 
-/* the docket tag — perforated hang-tag motif, the site's signature element */
+/* the docket tag — perforated hang-tag motif, the site's signature element.
+   Every docket rests at a slight tilt (--tilt, default -2deg) and flips
+   to the opposite angle on hover. Individual tags can override --tilt
+   inline for variety (see SocialLinks.tsx); anything that doesn't sits
+   at the default. */
 .docket {
   position: relative;
-  border: 1px solid #16161b;
+  border: 1px solid var(--docket-border, #16161b);
   border-radius: 2px;
+  transform: rotate(var(--tilt, -2deg));
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+  box-shadow: 1px 2px 3px rgba(22, 22, 27, 0.1);
+  font-weight: 600;
+}
+
+.docket:hover {
+  transform: rotate(calc(var(--tilt, -2deg) * -1));
+  box-shadow: 1px 3px 6px rgba(22, 22, 27, 0.16);
 }
 
 .docket::before {
@@ -47,10 +60,18 @@ body {
   top: 50%;
   width: 8px;
   height: 8px;
-  border: 1px solid #16161b;
+  border: 1px solid var(--docket-circle-border, #16161b);
   border-radius: 50%;
-  background: #efede7;
+  background: var(--docket-circle-bg, #efede7);
   transform: translateY(-50%);
+}
+
+/* Inverted variant — for tags sitting on the indigo footer band: white
+   border instead of ink, yellow grommet instead of paper-toned. */
+.docket-inverted {
+  --docket-border: #efede7;
+  --docket-circle-border: #ffc53d;
+  --docket-circle-bg: #ffc53d;
 }
 
 .docket-dashed {
@@ -115,89 +136,23 @@ html[data-spec="on"] .spec-mark::after {
   display: block;
 }
 
-/* Hero ambient gradient
-   - No indigo — soft multi-colour wash
-   - Contained in hero, soft top fade so it never touches the nav
-   - GPU-friendly transforms only
-*/
-.hero-gradient {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 100%);
-}
-
-.hero-gradient::before,
-.hero-gradient::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  will-change: transform;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  opacity: 0.55;
-}
-
-/* Soft warm rose / peach */
-.hero-gradient::before {
-  width: 60%;
-  height: 55%;
-  top: 20%;
-  left: -8%;
-  background: rgba(251, 146, 160, 0.35);
-  animation: blob-a 20s ease-in-out infinite;
-}
-
-/* Soft sky / mint */
-.hero-gradient::after {
-  width: 55%;
-  height: 50%;
-  top: 10%;
-  right: -10%;
-  background: rgba(125, 211, 252, 0.32);
-  animation: blob-b 24s ease-in-out infinite;
-}
-
-@keyframes blob-a {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    background: rgba(251, 146, 160, 0.35);
+/* ===== TICKER =====
+   A continuously scrolling band of color — the one piece of the site
+   that moves without any interaction. Two identical copies of the same
+   content sit side by side; scrolling exactly half their combined
+   width loops seamlessly. Already covered by the prefers-reduced-motion
+   rule at the top of this file. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
   }
-  33% {
-    transform: translate(14%, 10%) scale(1.12);
-    background: rgba(253, 186, 116, 0.3);
-  }
-  66% {
-    transform: translate(6%, 18%) scale(0.96);
-    background: rgba(244, 114, 182, 0.28);
+  to {
+    transform: translateX(-50%);
   }
 }
 
-@keyframes blob-b {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    background: rgba(125, 211, 252, 0.32);
-  }
-  40% {
-    transform: translate(-16%, 14%) scale(1.15);
-    background: rgba(167, 243, 208, 0.28);
-  }
-  70% {
-    transform: translate(-6%, 6%) scale(0.92);
-    background: rgba(196, 181, 253, 0.26);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-gradient::before,
-  .hero-gradient::after {
-    animation: none;
-    opacity: 0.4;
-  }
-  .hero-gradient::before {
-    transform: translate(4%, 8%) scale(1.05);
-  }
-  .hero-gradient::after {
-    transform: translate(-8%, 4%) scale(1.05);
-  }
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 24s linear infinite;
 }

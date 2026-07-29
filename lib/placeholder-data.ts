@@ -15,8 +15,7 @@ export const placeholderProjects: Project[] = [
     client: "Koma Kitchen",
     type: "Brand Identity",
     year: 2025,
-    summary:
-      "A full brand system for a kitchen concept that needed to feel warm, precise, and unmistakably its own.",
+    summary: "A full brand system for a kitchen concept that needed to feel warm, precise, and unmistakably its own.",
     description:
       "Full identity system for Koma Kitchen — naming support, wordmark, visual language, and application across packaging, social, and space.\n\nReplace with the real project story: the brief, the constraint that shaped it, and the one decision you're proudest of.",
     cover_image: null,
@@ -33,8 +32,7 @@ export const placeholderProjects: Project[] = [
     client: "Ramadan Acts of Random Kindness",
     type: "Brand Identity / Campaign System",
     year: 2026,
-    summary:
-      "A full visual system, held together across dozens of live assets, through one charity's entire Ramadan season.",
+    summary: "A full visual system, held together across dozens of live assets, through one charity's entire Ramadan season.",
     description:
       "Two logo directions developed with written rationale — an Arabic calligraphy mark and a 'giving circle' mark — followed by a full live campaign: Ramadan, Jummah, and Eid greetings, fundraiser trackers and milestone updates, program explainers, and gratitude posts, plus a logo refinement pass partway through.\n\nThe real test of a brand system isn't the first asset, it's the fortieth — staying visually consistent (color, type, motif) across a live, fast-moving campaign without it feeling phoned in.\n\nReplace with your own note on working with RARK directly, if you want that context on the page.",
     cover_image: null,
@@ -51,8 +49,7 @@ export const placeholderProjects: Project[] = [
     client: "Self-initiated",
     type: "Concept Advertising",
     year: 2026,
-    summary:
-      "Spec ads for Colgate, Spotify, Starlink, Grok, Dangote, and five more — one sharp visual idea each, minimal copy.",
+    summary: "Spec ads for Colgate, Spotify, Starlink, Grok, Dangote, and five more — one sharp visual idea each, minimal copy.",
     description:
       "A set of concept advertisements for ten established brands (Colgate, Spotify, Starlink, Grok, Dangote, Twyford, Robb, Gino, Lontor, AKT), each built around a single visual metaphor or pun rather than product photography.\n\nThis is the idea-first side of the practice — a different muscle from a full identity system, closer to agency-style concept advertising: one strong thought, executed cleanly.\n\nReplace with the actual ten pieces, plus a line on which one you're proudest of and why.",
     cover_image: null,

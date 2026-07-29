@@ -16,3 +16,11 @@ export type Project = {
 };
 
 export type ProjectInput = Omit<Project, "id" | "created_at">;
+
+export type Lead = {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  created_at: string;
+};

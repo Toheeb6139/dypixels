@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Project, ProjectInput } from "@/lib/types";
+import { Project, ProjectInput, Lead } from "@/lib/types";
 import {
   createProject,
   updateProject,
   deleteProject,
   uploadProjectImage,
+  deleteLead,
 } from "./actions";
 
 const emptyDraft: Partial<ProjectInput> = {
@@ -25,7 +26,13 @@ const emptyDraft: Partial<ProjectInput> = {
   sort_order: 999,
 };
 
-export function DashboardClient({ projects }: { projects: Project[] }) {
+export function DashboardClient({
+  projects,
+  leads,
+}: {
+  projects: Project[];
+  leads: Lead[];
+}) {
   const [openId, setOpenId] = useState<string | "new" | null>(null);
   const router = useRouter();
 
@@ -112,7 +119,72 @@ export function DashboardClient({ projects }: { projects: Project[] }) {
           No projects yet. Add your first one above.
         </p>
       )}
+
+      <div className="mt-16 pt-8 border-t border-line">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-display text-2xl">Leads</h2>
+          <span className="font-mono text-xs text-mute uppercase tracking-wider">
+            {leads.length} submission{leads.length === 1 ? "" : "s"}
+          </span>
+        </div>
+
+        {leads.length === 0 ? (
+          <p className="font-mono text-sm text-mute">
+            No submissions yet — they'll show up here when someone fills
+            out the contact form on /about.
+          </p>
+        ) : (
+          <ul className="space-y-4">
+            {leads.map((lead) => (
+              <LeadRow key={lead.id} lead={lead} onDeleted={() => router.refresh()} />
+            ))}
+          </ul>
+        )}
+      </div>
     </main>
+  );
+}
+
+function LeadRow({ lead, onDeleted }: { lead: Lead; onDeleted: () => void }) {
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete() {
+    if (!confirm(`Delete the message from ${lead.name}?`)) return;
+    setDeleting(true);
+    try {
+      await deleteLead(lead.id);
+      onDeleted();
+    } catch {
+      setDeleting(false);
+    }
+  }
+
+  return (
+    <li className="border border-line p-4">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-body">
+            {lead.name}{" "}
+            <span className="font-mono text-xs text-mute">
+              &lt;{lead.email}&gt;
+            </span>
+          </p>
+          <p className="font-mono text-[11px] text-mute mt-1">
+            {new Date(lead.created_at).toLocaleString()}
+          </p>
+        </div>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="font-mono text-[11px] uppercase tracking-wider text-flag hover:opacity-70 transition-opacity shrink-0"
+        >
+          {deleting ? "…" : "Delete"}
+        </button>
+      </div>
+      <p className="font-body text-sm text-ink/85 mt-3 whitespace-pre-line">
+        {lead.message}
+      </p>
+    </li>
   );
 }
 

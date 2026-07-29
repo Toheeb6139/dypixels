@@ -73,3 +73,9 @@ export async function uploadProjectImage(formData: FormData) {
   const { data } = supabaseAdmin.storage.from("project-images").getPublicUrl(path);
   return data.publicUrl;
 }
+
+export async function deleteLead(id: string) {
+  const { error } = await supabaseAdmin.from("leads").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/dashboard");
+}

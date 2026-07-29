@@ -7,12 +7,11 @@ import { CoverPlaceholder } from "./CoverPlaceholder";
 export function FeaturedProject({ project }: { project: Project }) {
   return (
     <section className="px-6 md:px-10 pt-4 pb-16 md:pb-24">
-      <Link
-        href={`/work/${project.slug}`}
-        className="group block"
-      >
-        {/* Cover */}
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-paper mb-6 md:mb-8">
+      <Link href={`/work/${project.slug}`} className="group block">
+        <div
+          className="spec-mark relative w-full aspect-[16/10] overflow-hidden bg-ink mb-6 md:mb-8"
+          data-spec-label="FEATURED COVER — 16:10"
+        >
           {project.cover_image ? (
             isVideoUrl(project.cover_image) ? (
               <video
@@ -38,8 +37,10 @@ export function FeaturedProject({ project }: { project: Project }) {
           )}
         </div>
 
-        {/* Meta */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-8">
+        <div
+          className="spec-mark flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-8"
+          data-spec-label="FEATURED META"
+        >
           <div className="max-w-2xl">
             <p className="font-mono text-[11px] uppercase tracking-widest text-mute mb-3">
               Featured · {project.year}
@@ -53,7 +54,7 @@ export function FeaturedProject({ project }: { project: Project }) {
           </div>
 
           <div className="flex items-center gap-4 shrink-0">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-mute border border-line px-2.5 py-1">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-paper bg-flash px-2.5 py-1">
               {project.type}
             </span>
             <span className="font-mono text-sm uppercase tracking-wider text-ink group-hover:text-flash transition-colors duration-300">

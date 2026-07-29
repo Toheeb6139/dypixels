@@ -5,10 +5,14 @@
 
 insert into projects (slug, title, client, type, year, summary, description, featured, sort_order, published)
 values
+  ('koma-kitchen', 'Koma Kitchen', 'Koma Kitchen', 'Brand Identity', 2025,
+   'A full brand system for a kitchen concept that needed to feel warm, precise, and unmistakably its own.',
+   'Full identity system for Koma Kitchen — naming support, wordmark, visual language, and application across packaging, social, and space.',
+   true, 0, false),
   ('rark-ramadan-campaign', 'RARK', 'Ramadan Acts of Random Kindness', 'Brand Identity / Campaign System', 2026,
    'A full visual system, held together across dozens of live assets, through one charity''s entire Ramadan season.',
    'Two logo directions developed with written rationale, followed by a full live campaign: greetings, fundraiser trackers, program explainers, and gratitude posts — staying visually consistent across a live, fast-moving campaign.',
-   true, 1, false),
+   false, 1, false),
   ('ten-brand-spec-ads', 'Ten brands, ten ideas', 'Self-initiated', 'Concept Advertising', 2026,
    'Spec ads for Colgate, Spotify, Starlink, Grok, Dangote, and five more — one sharp visual idea each, minimal copy.',
    'A set of concept advertisements for ten established brands, each built around a single visual metaphor or pun rather than product photography.',
