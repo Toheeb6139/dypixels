@@ -25,8 +25,8 @@ export default async function Home() {
 
       {/* Hero — the thesis of the page */}
       <section
-        className="spec-mark min-h-[80vh] flex flex-col justify-center px-6 md:px-10"
-        data-spec-label="HERO"
+        className="min-h-[80vh] flex flex-col justify-center px-6 md:px-10"
+       
       >
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
           Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
@@ -34,8 +34,8 @@ export default async function Home() {
 
         {/* Mobile: forced 4-line break. Desktop: natural flow */}
         <h1
-          className="spec-mark font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
-          data-spec-label="H1 — CLAMP"
+          className="font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
+         
         >
           <span className="md:hidden">
             I design
@@ -63,8 +63,8 @@ export default async function Home() {
       {/* Work */}
       <section
         id="work"
-        className="spec-mark px-6 md:px-10 py-16 md:py-24"
-        data-spec-label="WORK GRID"
+        className="px-6 md:px-10 py-16 md:py-24"
+       
       >
         <div className="flex items-baseline justify-between mb-12">
           <h2 className="font-display text-2xl md:text-3xl">More work</h2>
@@ -90,8 +90,8 @@ export default async function Home() {
           </p>
           <a
             href="/about"
-            className="spec-mark font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
-            data-spec-label="ABOUT TEASER"
+            className="font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
+           
           >
             I studied engineering, then decided brands needed me more than
             circuits did. Here's the rest of the story →

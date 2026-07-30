@@ -3,14 +3,10 @@ import Image from "next/image";
 
 export function Nav() {
   return (
-    <header
-      className="spec-mark w-full px-4 sm:px-6 md:px-10 py-5 md:py-6 flex items-center justify-between gap-3"
-      data-spec-label="NAV"
-    >
+    <header className="w-full px-4 sm:px-6 md:px-10 py-5 md:py-6 flex items-center justify-between gap-3">
       <Link
         href="/"
-        className="spec-mark inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"
-        data-spec-label="LOGOMARK"
+        className="inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"
       >
         <Image
           src="/logo-mark.png"
@@ -21,10 +17,7 @@ export function Nav() {
           priority
         />
       </Link>
-      <nav
-        className="spec-mark flex items-center gap-3 sm:gap-5 md:gap-6 font-mono text-[10px] sm:text-xs uppercase tracking-wider"
-        data-spec-label="NAV LINKS"
-      >
+      <nav className="flex items-center gap-3 sm:gap-5 md:gap-6 font-mono text-[10px] sm:text-xs uppercase tracking-wider">
         <Link href="/#work" className="hover:text-flash transition-colors">
           Work
         </Link>

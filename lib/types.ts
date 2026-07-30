@@ -1,6 +1,6 @@
 export type GalleryItem = {
   url: string;
-  layout: "full" | "half"; // full = spans the whole width (single hero shot/video); half = sits side-by-side in a 2-up grid
+  layout: "full" | "half" | "third" | "quarter"; // how many sit in a row: full = 1, half = 2, third = 3, quarter = 4
 };
 
 export type Project = {

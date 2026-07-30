@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Schibsted_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SpecModeOverlay } from "@/components/SpecMode";
 import { BackToTop } from "@/components/BackToTop";
 
 const display = Schibsted_Grotesk({
@@ -36,7 +35,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-body bg-paper text-ink antialiased">
-        <SpecModeOverlay />
         <BackToTop />
         {children}
       </body>

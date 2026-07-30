@@ -14,8 +14,7 @@ export default function About() {
         </p>
 
         <h1
-          className="spec-mark font-display text-4xl md:text-6xl max-w-3xl leading-[1.02] mb-6"
-          data-spec-label="H1"
+          className="font-display text-4xl md:text-6xl max-w-3xl leading-[1.02] mb-6"
         >
           I'm Toheeb — <span className="text-flash font-extrabold">dypixels</span> is
           just what I call it when I'm working.
@@ -31,8 +30,7 @@ export default function About() {
 
         <div className="grid md:grid-cols-3 gap-12">
           <div
-            className="spec-mark md:col-span-2 font-body text-base leading-snug text-ink/85 space-y-4 max-w-xl"
-            data-spec-label="BIO"
+            className="md:col-span-2 font-body text-base leading-snug text-ink/85 space-y-4 max-w-xl"
           >
             <p>
               I'm finishing a degree in Electronic and Computer Engineering
@@ -59,8 +57,7 @@ export default function About() {
           </div>
 
           <div
-            className="spec-mark font-mono text-sm space-y-8"
-            data-spec-label="META"
+            className="font-mono text-sm space-y-8"
           >
             <div>
               <p className="text-mute uppercase tracking-wider text-xs mb-2">
@@ -90,8 +87,7 @@ export default function About() {
         </div>
 
         <div
-          className="spec-mark mt-20 md:mt-28 pt-12 border-t border-line"
-          data-spec-label="LEAD FORM"
+          className="mt-20 md:mt-28 pt-12 border-t border-line"
         >
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-3">
             Have a project in mind?

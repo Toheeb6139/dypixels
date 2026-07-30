@@ -8,13 +8,9 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/work/${project.slug}`}
-      className="spec-mark group block border-b border-line pb-8 mb-8 last:border-none"
-      data-spec-label="PROJECT CARD"
+      className="group block border-b border-line pb-8 mb-8 last:border-none"
     >
-      <div
-        className="spec-mark relative w-full aspect-[4/3] overflow-hidden bg-ink mb-4"
-        data-spec-label="IMG — 4:3"
-      >
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-ink mb-4">
         {project.cover_image ? (
           isVideoUrl(project.cover_image) ? (
             <video

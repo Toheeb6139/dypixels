@@ -446,10 +446,10 @@ function ProjectForm({
 
       <label className={labelClass}>Gallery (optional — extra shots on the project page)</label>
       <p className="font-mono text-[10px] text-mute mb-1">
-        Select multiple files at once if you like. Pick "Full" for a
-        single large image or video spanning the whole width, or "Half"
-        to sit side-by-side with another item in a 2-up grid. Mix and
-        match freely.
+        Select multiple files at once if you like. Choose how many sit
+        in a row: Full (1), Half (2), Third (3), or Quarter (4). Shown
+        as a tight cropped grid — click any image on the live site to
+        see the complete, uncropped version.
       </p>
       <div className="flex items-center gap-3">
         <input
@@ -471,24 +471,18 @@ function ProjectForm({
                 {item.url}
               </span>
               <div className="flex border border-line shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setGalleryLayout(i, "half")}
-                  className={`font-mono text-[10px] uppercase px-2 py-1 ${
-                    item.layout === "half" ? "bg-flash text-paper" : "text-mute"
-                  }`}
-                >
-                  Half
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setGalleryLayout(i, "full")}
-                  className={`font-mono text-[10px] uppercase px-2 py-1 border-l border-line ${
-                    item.layout === "full" ? "bg-flash text-paper" : "text-mute"
-                  }`}
-                >
-                  Full
-                </button>
+                {(["full", "half", "third", "quarter"] as const).map((layout, li) => (
+                  <button
+                    key={layout}
+                    type="button"
+                    onClick={() => setGalleryLayout(i, layout)}
+                    className={`font-mono text-[10px] uppercase px-2 py-1 ${
+                      li > 0 ? "border-l border-line" : ""
+                    } ${item.layout === layout ? "bg-flash text-paper" : "text-mute"}`}
+                  >
+                    {layout}
+                  </button>
+                ))}
               </div>
               <button
                 type="button"
