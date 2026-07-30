@@ -57,7 +57,7 @@ export function ProjectGallery({
             aria-label={`View ${projectTitle} detail ${i + 1} full size`}
             className={`relative w-full block p-0 m-0 border-0 bg-ink cursor-pointer overflow-hidden ${
               COL_SPAN[item.layout]
-            } ${item.layout === "full" ? "aspect-[16/9]" : "aspect-square"}`}
+            } ${item.layout === "full" ? "aspect-[16/9]" : "aspect-[4/5]"}`}
           >
             {isVideoUrl(item.url) ? (
               <video
