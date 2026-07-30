@@ -46,9 +46,13 @@ function normalizeGallery(gallery: unknown): GalleryItem[] {
 export function DashboardClient({
   projects,
   leads,
+  renderedAt,
+  fetchError,
 }: {
   projects: Project[];
   leads: Lead[];
+  renderedAt: string;
+  fetchError: string | null;
 }) {
   const [openId, setOpenId] = useState<string | "new" | null>(null);
   const router = useRouter();
@@ -61,7 +65,7 @@ export function DashboardClient({
 
   return (
     <main className="min-h-screen px-6 md:px-10 py-10 bg-paper max-w-3xl mx-auto">
-      <div className="flex items-center justify-between mb-10">
+      <div className="flex items-center justify-between mb-4">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-mute">
             dypixels / admin
@@ -76,6 +80,23 @@ export function DashboardClient({
         </button>
       </div>
 
+      {/* Diagnostic bar — proves whether this page is actually showing
+          fresh server data. If "Server rendered at" doesn't change
+          after Hard refresh, the problem is caching upstream of the
+          app, not the code itself. */}
+      <div className="border border-line px-3 py-2 mb-6 flex items-center justify-between flex-wrap gap-2">
+        <p className="font-mono text-[10px] text-mute">
+          Server rendered at: {new Date(renderedAt).toLocaleTimeString()} · {projects.length} projects loaded
+          {fetchError && <span className="text-flag"> · fetch error: {fetchError}</span>}
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="font-mono text-[10px] uppercase tracking-wider text-flash underline underline-offset-2"
+        >
+          Hard refresh
+        </button>
+      </div>
+
       <button
         onClick={() => setOpenId(openId === "new" ? null : "new")}
         className="docket w-full px-4 py-3 mb-6 font-mono text-xs uppercase tracking-wider hover:text-flash transition-colors text-left"
@@ -85,6 +106,7 @@ export function DashboardClient({
 
       {openId === "new" && (
         <ProjectForm
+          key={`new-${renderedAt}`}
           draft={emptyDraft}
           onSaved={() => {
             setOpenId(null);
@@ -120,6 +142,7 @@ export function DashboardClient({
             {openId === p.id && (
               <div className="px-4 pb-4">
                 <ProjectForm
+                  key={`${p.id}-${renderedAt}`}
                   draft={p}
                   existingId={p.id}
                   onSaved={() => {

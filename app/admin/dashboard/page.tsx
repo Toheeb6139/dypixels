@@ -5,6 +5,8 @@ import { DashboardClient } from "./DashboardClient";
 // This page shows live projects and lead submissions behind a login —
 // it should never be served from a stale build-time snapshot.
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export default async function Dashboard() {
   if (!isAdminConfigured()) {
@@ -24,7 +26,7 @@ export default async function Dashboard() {
     );
   }
 
-  const { data: projects } = await supabaseAdmin
+  const { data: projects, error: projectsError } = await supabaseAdmin
     .from("projects")
     .select("*")
     .order("sort_order", { ascending: true });
@@ -38,6 +40,8 @@ export default async function Dashboard() {
     <DashboardClient
       projects={(projects as Project[]) ?? []}
       leads={(leads as Lead[]) ?? []}
+      renderedAt={new Date().toISOString()}
+      fetchError={projectsError?.message ?? null}
     />
   );
 }
