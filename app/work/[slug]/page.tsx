@@ -106,8 +106,10 @@ export default async function ProjectPage({
               {galleryItems.map((item, i) => (
                 <div
                   key={i}
-                  className={`relative w-full aspect-[4/3] bg-ink ${
-                    item.layout === "full" ? "md:col-span-2 md:aspect-[16/9]" : ""
+                  className={`relative w-full bg-ink ${
+                    item.layout === "full"
+                      ? "md:col-span-2 h-[60vh] md:h-[80vh]"
+                      : "aspect-[4/3]"
                   }`}
                 >
                   {isVideoUrl(item.url) ? (
@@ -117,14 +119,14 @@ export default async function ProjectPage({
                       loop
                       muted
                       playsInline
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-contain"
                     />
                   ) : (
                     <Image
                       src={item.url}
                       alt={`${project.title} detail ${i + 1}`}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       sizes={item.layout === "full" ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
                     />
                   )}

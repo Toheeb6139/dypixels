@@ -256,6 +256,7 @@ function ProjectForm({
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [autoSaveNote, setAutoSaveNote] = useState<string | null>(null);
 
@@ -308,21 +309,27 @@ function ProjectForm({
   }
 
   async function handleGalleryUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
     setUploadingGallery(true);
     setError(null);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const url = await uploadProjectImage(fd);
-      const nextGallery = [...(form.gallery ?? []), { url, layout: "half" as const }];
+      const uploaded: GalleryItem[] = [];
+      for (let i = 0; i < files.length; i++) {
+        setUploadProgress(`Uploading ${i + 1} of ${files.length}…`);
+        const fd = new FormData();
+        fd.append("file", files[i]);
+        const url = await uploadProjectImage(fd);
+        uploaded.push({ url, layout: "half" });
+      }
+      const nextGallery = [...(form.gallery ?? []), ...uploaded];
       set("gallery", nextGallery);
       await autoSave({ gallery: nextGallery });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");
     } finally {
       setUploadingGallery(false);
+      setUploadProgress(null);
       e.target.value = "";
     }
   }
@@ -439,18 +446,22 @@ function ProjectForm({
 
       <label className={labelClass}>Gallery (optional — extra shots on the project page)</label>
       <p className="font-mono text-[10px] text-mute mb-1">
-        Pick "Full" for a single large image or video spanning the whole
-        width, or "Half" to sit side-by-side with another item in a
-        2-up grid. Mix and match freely.
+        Select multiple files at once if you like. Pick "Full" for a
+        single large image or video spanning the whole width, or "Half"
+        to sit side-by-side with another item in a 2-up grid. Mix and
+        match freely.
       </p>
       <div className="flex items-center gap-3">
         <input
           type="file"
+          multiple
           accept="image/*,video/mp4,video/webm,video/quicktime"
           onChange={handleGalleryUpload}
           className="font-mono text-xs"
         />
-        {uploadingGallery && <span className="font-mono text-xs text-mute">Uploading…</span>}
+        {uploadingGallery && (
+          <span className="font-mono text-xs text-mute">{uploadProgress ?? "Uploading…"}</span>
+        )}
       </div>
       {(form.gallery ?? []).length > 0 && (
         <ul className="mt-2 space-y-2">
