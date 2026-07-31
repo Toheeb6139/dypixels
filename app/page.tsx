@@ -21,13 +21,15 @@ export default async function Home() {
 
   return (
     <>
-      {/* Nav + Hero + Ticker together fill exactly one screen — the
-          ticker always lands right at the bottom edge of the first
-          view, on any viewport height, mobile included. */}
-      <div className="min-h-screen min-h-[100dvh] flex flex-col">
+      {/* Desktop: Nav + Hero + Ticker together fill exactly one screen,
+          ticker pinned to the bottom edge. Mobile: no forced full-height
+          stretch — content sits with natural, compact spacing instead
+          of being centered in a tall box (which was leaving big empty
+          gaps above and below the text on phones). */}
+      <div className="md:min-h-screen md:min-h-[100dvh] flex flex-col">
         <Nav />
 
-        <section className="flex-1 flex flex-col justify-center px-6 md:px-10 py-6">
+        <section className="md:flex-1 flex flex-col justify-center px-6 md:px-10 py-10 md:py-6">
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
             Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
           </p>
