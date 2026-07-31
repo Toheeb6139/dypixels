@@ -90,7 +90,7 @@ export function DashboardClient({
 
       {openId === "new" && (
         <ProjectForm
-          key={`new-${renderedAt}`}
+          key="new"
           draft={emptyDraft}
           onSaved={() => {
             setOpenId(null);
@@ -126,7 +126,7 @@ export function DashboardClient({
             {openId === p.id && (
               <div className="px-4 pb-4">
                 <ProjectForm
-                  key={`${p.id}-${renderedAt}`}
+                  key={p.id}
                   draft={p}
                   existingId={p.id}
                   onSaved={() => {
@@ -338,6 +338,16 @@ function ProjectForm({
     await autoSave({ gallery: form.gallery ?? [] });
   }
 
+  async function moveGalleryItem(index: number, direction: -1 | 1) {
+    const current = form.gallery ?? [];
+    const target = index + direction;
+    if (target < 0 || target >= current.length) return;
+    const nextGallery = [...current];
+    [nextGallery[index], nextGallery[target]] = [nextGallery[target], nextGallery[index]];
+    set("gallery", nextGallery);
+    await autoSave({ gallery: nextGallery });
+  }
+
   async function removeGalleryItem(index: number) {
     const nextGallery = (form.gallery ?? []).filter((_, i) => i !== index);
     set("gallery", nextGallery);
@@ -489,13 +499,21 @@ function ProjectForm({
                   <span className="font-mono text-[10px] uppercase tracking-wider text-mute">
                     Text block
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => removeGalleryItem(i)}
-                    className="font-mono text-[11px] text-flag hover:opacity-70 transition-opacity"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <MoveButtons
+                      onUp={() => moveGalleryItem(i, -1)}
+                      onDown={() => moveGalleryItem(i, 1)}
+                      disableUp={i === 0}
+                      disableDown={i === (form.gallery ?? []).length - 1}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeGalleryItem(i)}
+                      className="font-mono text-[11px] text-flag hover:opacity-70 transition-opacity"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
                 <input
                   value={item.heading}
@@ -515,6 +533,12 @@ function ProjectForm({
               </li>
             ) : (
               <li key={i} className="flex items-center gap-2 flex-wrap">
+                <MoveButtons
+                  onUp={() => moveGalleryItem(i, -1)}
+                  onDown={() => moveGalleryItem(i, 1)}
+                  disableUp={i === 0}
+                  disableDown={i === (form.gallery ?? []).length - 1}
+                />
                 <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
                   {item.url}
                 </span>
@@ -598,6 +622,41 @@ function ProjectForm({
           </button>
         )}
       </div>
+    </div>
+  );
+}
+
+function MoveButtons({
+  onUp,
+  onDown,
+  disableUp,
+  disableDown,
+}: {
+  onUp: () => void;
+  onDown: () => void;
+  disableUp: boolean;
+  disableDown: boolean;
+}) {
+  return (
+    <div className="flex border border-line shrink-0">
+      <button
+        type="button"
+        onClick={onUp}
+        disabled={disableUp}
+        aria-label="Move up"
+        className="font-mono text-[10px] px-1.5 py-1 text-mute hover:text-flash disabled:opacity-30 disabled:hover:text-mute"
+      >
+        ↑
+      </button>
+      <button
+        type="button"
+        onClick={onDown}
+        disabled={disableDown}
+        aria-label="Move down"
+        className="font-mono text-[10px] px-1.5 py-1 border-l border-line text-mute hover:text-flash disabled:opacity-30 disabled:hover:text-mute"
+      >
+        ↓
+      </button>
     </div>
   );
 }

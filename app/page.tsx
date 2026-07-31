@@ -23,40 +23,40 @@ export default async function Home() {
     <>
       <Nav />
 
-      {/* Hero — the thesis of the page */}
-      <section
-        className="min-h-[80vh] flex flex-col justify-center px-6 md:px-10"
-       
-      >
-        <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
-          Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
-        </p>
+      {/* Nav + Hero + Ticker together fill exactly one screen — the
+          ticker always lands right at the bottom edge of the first
+          view, on any viewport height, mobile included. */}
+      <div className="min-h-screen flex flex-col">
+        <Nav />
 
-        {/* Mobile: forced 4-line break. Desktop: natural flow */}
-        <h1
-          className="font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
-         
-        >
-          <span className="md:hidden">
-            I design
-            <br />
-            <span className="text-flash">brands</span>
-            <br />
-            that get
-            <br />
-            remembered.
-          </span>
-          <span className="hidden md:inline">
-            I design <span className="text-flash">brands</span> that get remembered.
-          </span>
-        </h1>
+        <section className="flex-1 flex flex-col justify-center px-6 md:px-10 py-6">
+          <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
+            Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
+          </p>
 
-        <p className="font-body text-lg md:text-xl max-w-xl mt-8 text-ink/80 leading-relaxed">
-          I design the identity, the visuals, the whole outfit.
-        </p>
-      </section>
+          {/* Mobile: forced 4-line break. Desktop: natural flow */}
+          <h1 className="font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl">
+            <span className="md:hidden">
+              I design
+              <br />
+              <span className="text-flash">brands</span>
+              <br />
+              that get
+              <br />
+              remembered.
+            </span>
+            <span className="hidden md:inline">
+              I design <span className="text-flash">brands</span> that get remembered.
+            </span>
+          </h1>
 
-      <Ticker />
+          <p className="font-body text-lg md:text-xl max-w-xl mt-6 md:mt-8 text-ink/80 leading-relaxed">
+            I design the identity, the visuals, the whole outfit.
+          </p>
+        </section>
+
+        <Ticker />
+      </div>
 
       {featured && <FeaturedProject project={featured} />}
 
