@@ -8,6 +8,7 @@ import { ProjectGallery } from "@/components/ProjectGallery";
 import { getProjectBySlug } from "@/lib/projects";
 import { isVideoUrl } from "@/lib/media";
 import { normalizeGallery } from "@/lib/gallery";
+import { ProjectBadge, NeutralBadge } from "@/components/ProjectBadge";
 
 // Always fetch live from the database — same reasoning as the
 // homepage: correctness (a draft never leaking, a publish always
@@ -41,10 +42,10 @@ export default async function ProjectPage({
           <h1 className="font-display text-4xl md:text-6xl leading-[0.95] max-w-3xl">
             {project.title}
           </h1>
-          <div className="flex gap-2 flex-wrap font-mono text-[11px] uppercase tracking-wider text-mute">
-            <span className="border border-line px-2 py-1">{project.client}</span>
-            <span className="bg-flash text-paper px-2 py-1">{project.type}</span>
-            <span className="border border-line px-2 py-1">{project.year}</span>
+          <div className="flex gap-2 flex-wrap">
+            <ProjectBadge seed={project.slug}>{project.client}</ProjectBadge>
+            <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
+            <NeutralBadge>{project.year}</NeutralBadge>
           </div>
         </header>
 

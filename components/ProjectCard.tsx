@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Project } from "@/lib/types";
 import { isVideoUrl } from "@/lib/media";
 import { CoverPlaceholder } from "./CoverPlaceholder";
+import { ProjectBadge } from "./ProjectBadge";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
@@ -48,13 +49,9 @@ export function ProjectCard({ project }: { project: Project }) {
         {project.summary}
       </p>
 
-      <div className="mt-3 flex flex-wrap gap-y-2">
-        <span className="font-mono text-[11px] uppercase tracking-wider text-mute border border-line px-2 py-1 mr-2">
-          {project.client}
-        </span>
-        <span className="font-mono text-[11px] uppercase tracking-wider text-paper bg-flash px-2 py-1">
-          {project.type}
-        </span>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <ProjectBadge seed={project.slug}>{project.client}</ProjectBadge>
+        <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
       </div>
     </Link>
   );

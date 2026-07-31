@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Project } from "@/lib/types";
 import { isVideoUrl } from "@/lib/media";
 import { CoverPlaceholder } from "./CoverPlaceholder";
+import { ProjectBadge } from "./ProjectBadge";
 
 export function FeaturedProject({ project }: { project: Project }) {
   return (
@@ -48,9 +49,7 @@ export function FeaturedProject({ project }: { project: Project }) {
           </div>
 
           <div className="flex items-center gap-4 shrink-0">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-paper bg-flash px-2.5 py-1">
-              {project.type}
-            </span>
+            <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
             <span className="font-mono text-sm uppercase tracking-wider text-ink group-hover:text-flash transition-colors duration-300">
               View project →
             </span>
