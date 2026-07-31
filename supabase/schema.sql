@@ -10,9 +10,11 @@ create table if not exists projects (
   summary text default '',
   description text default '',
   cover_image text,
-  -- Each gallery item is {"url": "...", "layout": "full" | "half"}.
-  -- "full" spans the whole width (a single hero shot or video), "half"
-  -- sits side-by-side with another "half" item, forming a 2-up grid.
+  -- Each gallery item is either:
+  --   {"type": "media", "url": "...", "layout": "full"|"half"|"third"|"quarter"}
+  --   {"type": "text", "heading": "...", "body": "..."}
+  -- Media items form a tight cropped grid (1/2/3/4 per row); text
+  -- items break the grid with a heading + paragraph, Behance-style.
   gallery jsonb default '[]'::jsonb,
   featured boolean default false,
   sort_order int default 999,

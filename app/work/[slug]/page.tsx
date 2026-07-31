@@ -7,7 +7,7 @@ import { CoverPlaceholder } from "@/components/CoverPlaceholder";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { getProjectBySlug } from "@/lib/projects";
 import { isVideoUrl } from "@/lib/media";
-import { GalleryItem } from "@/lib/types";
+import { normalizeGallery } from "@/lib/gallery";
 
 // Always fetch live from the database — same reasoning as the
 // homepage: correctness (a draft never leaking, a publish always
@@ -23,20 +23,7 @@ export default async function ProjectPage({
   const project = await getProjectBySlug(params.slug);
   if (!project) notFound();
 
-  // Defensive normalization: handles gallery being missing/null
-  // entirely, the old string[] shape, stray null entries from a
-  // not-yet-migrated database, and anything else malformed — so a
-  // messy DB state never takes down the page.
-  const rawGallery = Array.isArray(project.gallery) ? project.gallery : [];
-  const galleryItems: GalleryItem[] = rawGallery
-    .filter((item): item is NonNullable<typeof item> => item != null)
-    .map((item) =>
-      typeof item === "string" ? { url: item, layout: "half" as const } : item
-    )
-    .filter(
-      (item): item is GalleryItem =>
-        typeof item?.url === "string" && item.url.length > 0
-    );
+  const galleryItems = normalizeGallery(project.gallery);
 
   return (
     <>

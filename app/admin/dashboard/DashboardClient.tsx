@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Project, ProjectInput, Lead, GalleryItem } from "@/lib/types";
+import { Project, ProjectInput, Lead, GalleryItem, GalleryMediaItem } from "@/lib/types";
+import { normalizeGallery } from "@/lib/gallery";
 import {
   createProject,
   updateProject,
@@ -25,23 +26,6 @@ const emptyDraft: Partial<ProjectInput> = {
   published: false,
   sort_order: 999,
 };
-
-// Defensive: handles gallery being null/missing, the old string[] shape
-// from before this format existed, and stray null entries from a
-// not-yet-migrated database — so the admin UI never crashes on messy
-// data, it just quietly cleans it up.
-function normalizeGallery(gallery: unknown): GalleryItem[] {
-  if (!Array.isArray(gallery)) return [];
-  return gallery
-    .filter((item): item is NonNullable<typeof item> => item != null)
-    .map((item) =>
-      typeof item === "string" ? { url: item, layout: "half" as const } : item
-    )
-    .filter(
-      (item): item is GalleryItem =>
-        typeof item?.url === "string" && item.url.length > 0
-    );
-}
 
 export function DashboardClient({
   projects,
@@ -320,7 +304,7 @@ function ProjectForm({
         const fd = new FormData();
         fd.append("file", files[i]);
         const url = await uploadProjectImage(fd);
-        uploaded.push({ url, layout: "half" });
+        uploaded.push({ type: "media", url, layout: "half" });
       }
       const nextGallery = [...(form.gallery ?? []), ...uploaded];
       set("gallery", nextGallery);
@@ -334,15 +318,35 @@ function ProjectForm({
     }
   }
 
+  async function addTextBlock() {
+    const nextGallery: GalleryItem[] = [
+      ...(form.gallery ?? []),
+      { type: "text", heading: "", body: "" },
+    ];
+    set("gallery", nextGallery);
+    await autoSave({ gallery: nextGallery });
+  }
+
+  async function updateTextBlock(index: number, patch: { heading?: string; body?: string }) {
+    const nextGallery = (form.gallery ?? []).map((item, i) =>
+      i === index && item.type === "text" ? { ...item, ...patch } : item
+    );
+    set("gallery", nextGallery);
+  }
+
+  async function saveTextBlock(index: number) {
+    await autoSave({ gallery: form.gallery ?? [] });
+  }
+
   async function removeGalleryItem(index: number) {
     const nextGallery = (form.gallery ?? []).filter((_, i) => i !== index);
     set("gallery", nextGallery);
     await autoSave({ gallery: nextGallery });
   }
 
-  async function setGalleryLayout(index: number, layout: GalleryItem["layout"]) {
+  async function setGalleryLayout(index: number, layout: GalleryMediaItem["layout"]) {
     const nextGallery = (form.gallery ?? []).map((item, i) =>
-      i === index ? { ...item, layout } : item
+      i === index && item.type === "media" ? { ...item, layout } : item
     );
     set("gallery", nextGallery);
     await autoSave({ gallery: nextGallery });
@@ -449,9 +453,10 @@ function ProjectForm({
         Select multiple files at once if you like. Choose how many sit
         in a row: Full (1), Half (2), Third (3), or Quarter (4). Shown
         as a tight cropped grid — click any image on the live site to
-        see the complete, uncropped version.
+        see the complete, uncropped version. Add a text block to break
+        up the images with a heading and paragraph, Behance-style.
       </p>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <input
           type="file"
           multiple
@@ -462,37 +467,81 @@ function ProjectForm({
         {uploadingGallery && (
           <span className="font-mono text-xs text-mute">{uploadProgress ?? "Uploading…"}</span>
         )}
+        <button
+          type="button"
+          onClick={addTextBlock}
+          className="docket px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider hover:text-flash transition-colors"
+        >
+          + Add text block
+        </button>
       </div>
+      <p className="font-mono text-[10px] text-mute mt-1">
+        Order matters — items appear on the page in the order they're
+        listed below (upload, add text, upload more, etc. — whatever
+        order you do it in is the order it'll show).
+      </p>
       {(form.gallery ?? []).length > 0 && (
         <ul className="mt-2 space-y-2">
-          {(form.gallery ?? []).map((item, i) => (
-            <li key={i} className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
-                {item.url}
-              </span>
-              <div className="flex border border-line shrink-0">
-                {(["full", "half", "third", "quarter"] as const).map((layout, li) => (
+          {(form.gallery ?? []).map((item, i) =>
+            item.type === "text" ? (
+              <li key={i} className="border border-line p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-mute">
+                    Text block
+                  </span>
                   <button
-                    key={layout}
                     type="button"
-                    onClick={() => setGalleryLayout(i, layout)}
-                    className={`font-mono text-[10px] uppercase px-2 py-1 ${
-                      li > 0 ? "border-l border-line" : ""
-                    } ${item.layout === layout ? "bg-flash text-paper" : "text-mute"}`}
+                    onClick={() => removeGalleryItem(i)}
+                    className="font-mono text-[11px] text-flag hover:opacity-70 transition-opacity"
                   >
-                    {layout}
+                    Remove
                   </button>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={() => removeGalleryItem(i)}
-                className="font-mono text-[11px] text-flag hover:opacity-70 transition-opacity shrink-0"
-              >
-                Remove
-              </button>
-            </li>
-          ))}
+                </div>
+                <input
+                  value={item.heading}
+                  onChange={(e) => updateTextBlock(i, { heading: e.target.value })}
+                  onBlur={() => saveTextBlock(i)}
+                  placeholder="Heading (optional)"
+                  className="w-full border border-line bg-paper px-2 py-1.5 font-body text-sm mb-2 focus:outline-none focus-visible:outline-2 focus-visible:outline-flash"
+                />
+                <textarea
+                  value={item.body}
+                  onChange={(e) => updateTextBlock(i, { body: e.target.value })}
+                  onBlur={() => saveTextBlock(i)}
+                  placeholder="Body text"
+                  rows={3}
+                  className="w-full border border-line bg-paper px-2 py-1.5 font-body text-sm focus:outline-none focus-visible:outline-2 focus-visible:outline-flash"
+                />
+              </li>
+            ) : (
+              <li key={i} className="flex items-center gap-2 flex-wrap">
+                <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
+                  {item.url}
+                </span>
+                <div className="flex border border-line shrink-0">
+                  {(["full", "half", "third", "quarter"] as const).map((layout, li) => (
+                    <button
+                      key={layout}
+                      type="button"
+                      onClick={() => setGalleryLayout(i, layout)}
+                      className={`font-mono text-[10px] uppercase px-2 py-1 ${
+                        li > 0 ? "border-l border-line" : ""
+                      } ${item.layout === layout ? "bg-flash text-paper" : "text-mute"}`}
+                    >
+                      {layout}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeGalleryItem(i)}
+                  className="font-mono text-[11px] text-flag hover:opacity-70 transition-opacity shrink-0"
+                >
+                  Remove
+                </button>
+              </li>
+            )
+          )}
         </ul>
       )}
 

@@ -1,7 +1,16 @@
-export type GalleryItem = {
+export type GalleryMediaItem = {
+  type: "media";
   url: string;
   layout: "full" | "half" | "third" | "quarter"; // how many sit in a row: full = 1, half = 2, third = 3, quarter = 4
 };
+
+export type GalleryTextItem = {
+  type: "text";
+  heading: string;
+  body: string;
+};
+
+export type GalleryItem = GalleryMediaItem | GalleryTextItem;
 
 export type Project = {
   id: string;
