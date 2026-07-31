@@ -21,8 +21,6 @@ export default async function Home() {
 
   return (
     <>
-      <Nav />
-
       {/* Nav + Hero + Ticker together fill exactly one screen — the
           ticker always lands right at the bottom edge of the first
           view, on any viewport height, mobile included. */}

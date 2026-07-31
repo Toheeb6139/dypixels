@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Project, ProjectInput, Lead, GalleryItem, GalleryMediaItem } from "@/lib/types";
 import { normalizeGallery } from "@/lib/gallery";
+import { isVideoUrl } from "@/lib/media";
 import {
   createProject,
   updateProject,
@@ -282,7 +283,7 @@ function ProjectForm({
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const url = await uploadProjectImage(fd);
+      const { url } = await uploadProjectImage(fd);
       set("cover_image", url);
       await autoSave({ cover_image: url });
     } catch (err) {
@@ -303,8 +304,8 @@ function ProjectForm({
         setUploadProgress(`Uploading ${i + 1} of ${files.length}…`);
         const fd = new FormData();
         fd.append("file", files[i]);
-        const url = await uploadProjectImage(fd);
-        uploaded.push({ type: "media", url, layout: "half" });
+        const { url, name } = await uploadProjectImage(fd);
+        uploaded.push({ type: "media", url, name, layout: "half" });
       }
       const nextGallery = [...(form.gallery ?? []), ...uploaded];
       set("gallery", nextGallery);
@@ -455,7 +456,17 @@ function ProjectForm({
         {uploading && <span className="font-mono text-xs text-mute">Uploading…</span>}
       </div>
       {form.cover_image && (
-        <p className="font-mono text-[11px] text-mute mt-1 break-all">{form.cover_image}</p>
+        <div className="flex items-center gap-2 mt-1">
+          <div className="w-10 h-10 shrink-0 bg-ink overflow-hidden">
+            {isVideoUrl(form.cover_image) ? (
+              <video src={form.cover_image} muted playsInline className="w-full h-full object-cover" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={form.cover_image} alt="" className="w-full h-full object-cover" />
+            )}
+          </div>
+          <p className="font-mono text-[11px] text-mute break-all">{form.cover_image}</p>
+        </div>
       )}
 
       <label className={labelClass}>Gallery (optional — extra shots on the project page)</label>
@@ -539,8 +550,21 @@ function ProjectForm({
                   disableUp={i === 0}
                   disableDown={i === (form.gallery ?? []).length - 1}
                 />
+                <div className="w-10 h-10 shrink-0 bg-ink overflow-hidden">
+                  {isVideoUrl(item.url) ? (
+                    <video
+                      src={item.url}
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.url} alt="" className="w-full h-full object-cover" />
+                  )}
+                </div>
                 <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
-                  {item.url}
+                  {item.name ?? item.url}
                 </span>
                 <div className="flex border border-line shrink-0">
                   {(["full", "half", "third", "quarter"] as const).map((layout, li) => (

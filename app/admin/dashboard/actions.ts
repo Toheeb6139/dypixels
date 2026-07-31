@@ -57,12 +57,28 @@ export async function deleteProject(id: string, slug: string) {
   revalidatePath(`/work/${slug}`);
 }
 
+function sanitizeFilename(name: string) {
+  const dot = name.lastIndexOf(".");
+  const base = dot > 0 ? name.slice(0, dot) : name;
+  const ext = dot > 0 ? name.slice(dot + 1) : "";
+  const safeBase = base
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60);
+  return { safeBase: safeBase || "file", ext: ext.toLowerCase() };
+}
+
 export async function uploadProjectImage(formData: FormData) {
   const file = formData.get("file") as File | null;
   if (!file) throw new Error("No file provided.");
 
-  const ext = file.name.split(".").pop();
-  const path = `${crypto.randomUUID()}.${ext}`;
+  const { safeBase, ext } = sanitizeFilename(file.name);
+  // Short random prefix avoids collisions between two people (or two
+  // uploads) using the same filename, while keeping the original name
+  // readable in the path itself.
+  const path = `${crypto.randomUUID().slice(0, 8)}-${safeBase}${ext ? "." + ext : ""}`;
 
   const { error } = await supabaseAdmin.storage
     .from("project-images")
@@ -71,7 +87,7 @@ export async function uploadProjectImage(formData: FormData) {
   if (error) throw new Error(error.message);
 
   const { data } = supabaseAdmin.storage.from("project-images").getPublicUrl(path);
-  return data.publicUrl;
+  return { url: data.publicUrl, name: file.name };
 }
 
 export async function deleteLead(id: string) {

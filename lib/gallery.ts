@@ -35,7 +35,8 @@ export function normalizeGallery(raw: unknown): GalleryItem[] {
         const layout = ["full", "half", "third", "quarter"].includes(item.layout)
           ? item.layout
           : "half";
-        return { type: "media", url: item.url, layout };
+        const name = typeof item.name === "string" ? item.name : undefined;
+        return { type: "media", url: item.url, layout, ...(name ? { name } : {}) };
       }
 
       return null;

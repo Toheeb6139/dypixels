@@ -1,6 +1,7 @@
 export type GalleryMediaItem = {
   type: "media";
   url: string;
+  name?: string; // original filename, for display in /admin only
   layout: "full" | "half" | "third" | "quarter"; // how many sit in a row: full = 1, half = 2, third = 3, quarter = 4
 };
 
