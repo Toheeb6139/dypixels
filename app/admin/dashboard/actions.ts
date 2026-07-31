@@ -70,24 +70,27 @@ function sanitizeFilename(name: string) {
   return { safeBase: safeBase || "file", ext: ext.toLowerCase() };
 }
 
-export async function uploadProjectImage(formData: FormData) {
-  const file = formData.get("file") as File | null;
-  if (!file) throw new Error("No file provided.");
-
-  const { safeBase, ext } = sanitizeFilename(file.name);
-  // Short random prefix avoids collisions between two people (or two
-  // uploads) using the same filename, while keeping the original name
-  // readable in the path itself.
+// Issues a short-lived signed upload slot instead of accepting the
+// file directly. Vercel's serverless functions hard-cap request
+// bodies at 4.5MB regardless of any config we set — so instead of
+// sending the file through this server action, the browser uploads
+// straight to Supabase using this signed URL. This action's own
+// request/response stays tiny (just a filename in, a URL out).
+export async function createUploadSlot(originalFilename: string) {
+  const { safeBase, ext } = sanitizeFilename(originalFilename);
   const path = `${crypto.randomUUID().slice(0, 8)}-${safeBase}${ext ? "." + ext : ""}`;
 
-  const { error } = await supabaseAdmin.storage
+  const { data, error } = await supabaseAdmin.storage
     .from("project-images")
-    .upload(path, file, { cacheControl: "3600", upsert: false });
+    .createSignedUploadUrl(path);
 
   if (error) throw new Error(error.message);
 
-  const { data } = supabaseAdmin.storage.from("project-images").getPublicUrl(path);
-  return { url: data.publicUrl, name: file.name };
+  const { data: publicUrlData } = supabaseAdmin.storage
+    .from("project-images")
+    .getPublicUrl(path);
+
+  return { path, token: data.token, url: publicUrlData.publicUrl };
 }
 
 export async function deleteLead(id: string) {

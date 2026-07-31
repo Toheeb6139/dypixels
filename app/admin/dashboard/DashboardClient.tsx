@@ -6,13 +6,27 @@ import Image from "next/image";
 import { Project, ProjectInput, Lead, GalleryItem, GalleryMediaItem } from "@/lib/types";
 import { normalizeGallery } from "@/lib/gallery";
 import { isVideoUrl } from "@/lib/media";
+import { supabase } from "@/lib/supabase";
 import {
   createProject,
   updateProject,
   deleteProject,
-  uploadProjectImage,
+  createUploadSlot,
   deleteLead,
 } from "./actions";
+
+// Uploads a file straight to Supabase from the browser — the server
+// only issues a signed permission slot first (a tiny request), so
+// large files never pass through our own Vercel function and never
+// hit its platform-level body size limit.
+async function uploadFileDirect(file: File): Promise<{ url: string; name: string }> {
+  const { path, token, url } = await createUploadSlot(file.name);
+  const { error } = await supabase.storage
+    .from("project-images")
+    .uploadToSignedUrl(path, token, file);
+  if (error) throw new Error(error.message);
+  return { url, name: file.name };
+}
 
 const emptyDraft: Partial<ProjectInput> = {
   title: "",
@@ -46,6 +60,18 @@ export function DashboardClient({
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
     router.push("/admin");
+    router.refresh();
+  }
+
+  async function moveProject(index: number, direction: -1 | 1) {
+    const target = index + direction;
+    if (target < 0 || target >= projects.length) return;
+    const a = projects[index];
+    const b = projects[target];
+    await Promise.all([
+      updateProject(a.id, { sort_order: b.sort_order }),
+      updateProject(b.id, { sort_order: a.sort_order }),
+    ]);
     router.refresh();
   }
 
@@ -102,28 +128,41 @@ export function DashboardClient({
         />
       )}
 
-      <ul className="space-y-3 mt-8">
-        {projects.map((p) => (
+      <p className="font-mono text-[10px] text-mute mt-8 mb-2">
+        Reorder with the arrows — this controls the order projects
+        appear in the grid. The featured project (if any) always leads
+        the page regardless of this order.
+      </p>
+      <ul className="space-y-3">
+        {projects.map((p, i) => (
           <li key={p.id} className="border border-line">
-            <button
-              onClick={() => setOpenId(openId === p.id ? null : p.id)}
-              className="w-full flex items-center justify-between px-4 py-3 text-left"
-            >
-              <span className="font-body">
-                {p.title}{" "}
-                <span className="font-mono text-xs text-mute ml-2">
-                  {p.published ? "published" : "draft"}
-                </span>
-                {p.featured && (
-                  <span className="font-mono text-xs text-flash ml-2">
-                    ★ featured
+            <div className="w-full flex items-center gap-2 px-2 py-2">
+              <MoveButtons
+                onUp={() => moveProject(i, -1)}
+                onDown={() => moveProject(i, 1)}
+                disableUp={i === 0}
+                disableDown={i === projects.length - 1}
+              />
+              <button
+                onClick={() => setOpenId(openId === p.id ? null : p.id)}
+                className="flex-1 flex items-center justify-between px-2 py-1 text-left"
+              >
+                <span className="font-body">
+                  {p.title}{" "}
+                  <span className="font-mono text-xs text-mute ml-2">
+                    {p.published ? "published" : "draft"}
                   </span>
-                )}
-              </span>
-              <span className="font-mono text-xs text-mute">
-                {openId === p.id ? "−" : "+"}
-              </span>
-            </button>
+                  {p.featured && (
+                    <span className="font-mono text-xs text-flash ml-2">
+                      ★ featured
+                    </span>
+                  )}
+                </span>
+                <span className="font-mono text-xs text-mute">
+                  {openId === p.id ? "−" : "+"}
+                </span>
+              </button>
+            </div>
 
             {openId === p.id && (
               <div className="px-4 pb-4">
@@ -282,9 +321,7 @@ function ProjectForm({
     setUploading(true);
     setError(null);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const { url } = await uploadProjectImage(fd);
+      const { url } = await uploadFileDirect(file);
       set("cover_image", url);
       await autoSave({ cover_image: url });
     } catch (err) {
@@ -303,9 +340,7 @@ function ProjectForm({
       const uploaded: GalleryItem[] = [];
       for (let i = 0; i < files.length; i++) {
         setUploadProgress(`Uploading ${i + 1} of ${files.length}…`);
-        const fd = new FormData();
-        fd.append("file", files[i]);
-        const { url, name } = await uploadProjectImage(fd);
+        const { url, name } = await uploadFileDirect(files[i]);
         uploaded.push({ type: "media", url, name, layout: "half" });
       }
       const nextGallery = [...(form.gallery ?? []), ...uploaded];
