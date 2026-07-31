@@ -24,7 +24,7 @@ export default async function Home() {
       {/* Nav + Hero + Ticker together fill exactly one screen — the
           ticker always lands right at the bottom edge of the first
           view, on any viewport height, mobile included. */}
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen min-h-[100dvh] flex flex-col">
         <Nav />
 
         <section className="flex-1 flex flex-col justify-center px-6 md:px-10 py-6">

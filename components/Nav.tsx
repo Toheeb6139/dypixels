@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function Nav() {
   return (
-    <header className="w-full px-4 sm:px-6 md:px-10 py-5 md:py-6 flex items-center justify-between gap-3">
+    <header className="w-full px-4 sm:px-6 md:px-10 py-4 md:py-6 flex items-center justify-between gap-3">
       <Link
         href="/"
         className="inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"

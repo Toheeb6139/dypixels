@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Project, ProjectInput, Lead, GalleryItem, GalleryMediaItem } from "@/lib/types";
 import { normalizeGallery } from "@/lib/gallery";
 import { isVideoUrl } from "@/lib/media";
@@ -457,15 +458,29 @@ function ProjectForm({
       </div>
       {form.cover_image && (
         <div className="flex items-center gap-2 mt-1">
-          <div className="w-10 h-10 shrink-0 bg-ink overflow-hidden">
+          <div className="relative w-10 h-10 shrink-0 bg-ink overflow-hidden">
             {isVideoUrl(form.cover_image) ? (
-              <video src={form.cover_image} muted playsInline className="w-full h-full object-cover" />
+              <video
+                src={form.cover_image}
+                muted
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+              />
             ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={form.cover_image} alt="" className="w-full h-full object-cover" />
+              <Image
+                src={form.cover_image}
+                alt=""
+                fill
+                sizes="40px"
+                quality={40}
+                className="object-cover"
+              />
             )}
           </div>
-          <p className="font-mono text-[11px] text-mute break-all">{form.cover_image}</p>
+          <p className="font-mono text-[11px] text-mute truncate" title={form.cover_image}>
+            {form.cover_image}
+          </p>
         </div>
       )}
 
@@ -550,20 +565,30 @@ function ProjectForm({
                   disableUp={i === 0}
                   disableDown={i === (form.gallery ?? []).length - 1}
                 />
-                <div className="w-10 h-10 shrink-0 bg-ink overflow-hidden">
+                <div className="relative w-10 h-10 shrink-0 bg-ink overflow-hidden">
                   {isVideoUrl(item.url) ? (
                     <video
                       src={item.url}
                       muted
                       playsInline
+                      preload="metadata"
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.url} alt="" className="w-full h-full object-cover" />
+                    <Image
+                      src={item.url}
+                      alt=""
+                      fill
+                      sizes="40px"
+                      quality={40}
+                      className="object-cover"
+                    />
                   )}
                 </div>
-                <span className="font-mono text-[11px] text-mute break-all flex-1 min-w-[120px]">
+                <span
+                  className="font-mono text-[11px] text-mute truncate flex-1 min-w-[80px]"
+                  title={item.name ?? item.url}
+                >
                   {item.name ?? item.url}
                 </span>
                 <div className="flex border border-line shrink-0">
