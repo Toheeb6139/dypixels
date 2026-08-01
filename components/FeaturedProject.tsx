@@ -9,7 +9,7 @@ export function FeaturedProject({ project }: { project: Project }) {
   return (
     <section className="px-6 md:px-10 pt-4 pb-16 md:pb-24">
       <Link href={`/work/${project.slug}`} className="group block">
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-ink mb-6 md:mb-8">
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-charcoal mb-6 md:mb-8">
           {project.cover_image ? (
             isVideoUrl(project.cover_image) ? (
               <video
@@ -49,7 +49,7 @@ export function FeaturedProject({ project }: { project: Project }) {
           </div>
 
           <div className="flex items-center gap-4 shrink-0">
-            <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
+            <ProjectBadge seed={project.slug} colorIndex={project.badge_color}>{project.type}</ProjectBadge>
             <span className="font-mono text-sm uppercase tracking-wider text-ink group-hover:text-flash transition-colors duration-300">
               View project →
             </span>

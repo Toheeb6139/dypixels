@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens — light is the default, .dark overrides. Setting the
+   "dark" class on <html> (see ThemeToggle.tsx) flips every component
+   that uses the paper/ink/flash/flag/mute/line Tailwind colors,
+   without needing dark: prefixes scattered through every file. */
+:root {
+  --color-paper: #efede7;
+  --color-ink: #16161b;
+  --color-flash: #4b3aff;
+  --color-flag: #ff4433;
+  --color-mute: #8c8a90;
+  --color-line: #d9d6cd;
+}
+
+.dark {
+  --color-paper: #17171c;
+  --color-ink: #efede7;
+  --color-flash: #7c6fff;
+  --color-flag: #ff6b57;
+  --color-mute: #9a98a3;
+  --color-line: #313138;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -18,18 +40,19 @@ html {
 }
 
 body {
-  background-color: #efede7;
-  color: #16161b;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
-  background-color: #4b3aff;
-  color: #efede7;
+  background-color: var(--color-flash);
+  color: var(--color-paper);
 }
 
 /* focus ring, kept visible everywhere for keyboard nav */
 :focus-visible {
-  outline: 2px solid #4b3aff;
+  outline: 2px solid var(--color-flash);
   outline-offset: 3px;
 }
 
@@ -40,7 +63,7 @@ body {
    at the default. */
 .docket {
   position: relative;
-  border: 1px solid var(--docket-border, #16161b);
+  border: 1px solid var(--docket-border, var(--color-ink));
   border-radius: 2px;
   transform: rotate(var(--tilt, -2deg));
   transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
@@ -60,14 +83,16 @@ body {
   top: 50%;
   width: 8px;
   height: 8px;
-  border: 1px solid var(--docket-circle-border, #16161b);
+  border: 1px solid var(--docket-circle-border, var(--color-ink));
   border-radius: 50%;
-  background: var(--docket-circle-bg, #efede7);
+  background: var(--docket-circle-bg, var(--color-paper));
   transform: translateY(-50%);
 }
 
-/* Inverted variant — for tags sitting on the indigo footer band: white
-   border instead of ink, yellow grommet instead of paper-toned. */
+/* Inverted variant — for tags sitting on the indigo footer band: fixed
+   cream border regardless of theme, yellow grommet instead of
+   paper-toned. Fixed on purpose — the footer is always indigo, so its
+   tags always need light contrast elements, dark mode or not. */
 .docket-inverted {
   --docket-border: #efede7;
   --docket-circle-border: #ffc53d;

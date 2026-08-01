@@ -27,6 +27,7 @@ export type Project = {
   featured: boolean;
   sort_order: number;
   published: boolean;
+  badge_color: number | null; // explicit index into lib/theme.ts ACCENTS; null = auto (hash-derived)
   created_at: string;
 };
 

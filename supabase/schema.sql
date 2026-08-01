@@ -19,8 +19,14 @@ create table if not exists projects (
   featured boolean default false,
   sort_order int default 999,
   published boolean default false,
+  -- Index into the ACCENTS list in lib/theme.ts (0-5). Null = auto,
+  -- derived from the project's slug instead of chosen explicitly.
+  badge_color int,
   created_at timestamptz default now()
 );
+
+-- Already have the table without badge_color? Run this instead:
+--   alter table projects add column if not exists badge_color int;
 
 -- Already created the table before this column type changed? Run this
 -- instead of the create table above (safe to run even if gallery is

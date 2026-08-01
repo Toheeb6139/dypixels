@@ -11,7 +11,7 @@ export function ProjectCard({ project }: { project: Project }) {
       href={`/work/${project.slug}`}
       className="group block border-b border-line pb-8 mb-8 last:border-none"
     >
-      <div className="relative w-full aspect-[4/3] overflow-hidden bg-ink mb-4">
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-charcoal mb-4">
         {project.cover_image ? (
           isVideoUrl(project.cover_image) ? (
             <video
@@ -50,8 +50,8 @@ export function ProjectCard({ project }: { project: Project }) {
       </p>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <ProjectBadge seed={project.slug}>{project.client}</ProjectBadge>
-        <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
+        <ProjectBadge seed={project.slug} colorIndex={project.badge_color}>{project.client}</ProjectBadge>
+        <ProjectBadge seed={project.slug} colorIndex={project.badge_color}>{project.type}</ProjectBadge>
       </div>
     </Link>
   );

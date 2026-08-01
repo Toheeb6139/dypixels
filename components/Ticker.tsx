@@ -7,13 +7,13 @@ export function Ticker() {
   return (
     <div className="w-full overflow-hidden bg-flash py-3 mb-10 md:mb-16">
       <div className="ticker-track">
-        <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-paper whitespace-nowrap pr-4">
+        <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-cream whitespace-nowrap pr-4">
           {repeated}
         </span>
         {/* duplicate copy, hidden from screen readers, makes the loop seamless */}
         <span
           aria-hidden="true"
-          className="font-mono text-xs md:text-sm uppercase tracking-widest text-paper whitespace-nowrap pr-4"
+          className="font-mono text-xs md:text-sm uppercase tracking-widest text-cream whitespace-nowrap pr-4"
         >
           {repeated}
         </span>

@@ -43,13 +43,13 @@ export default async function ProjectPage({
             {project.title}
           </h1>
           <div className="flex gap-2 flex-wrap">
-            <ProjectBadge seed={project.slug}>{project.client}</ProjectBadge>
-            <ProjectBadge seed={project.slug}>{project.type}</ProjectBadge>
+            <ProjectBadge seed={project.slug} colorIndex={project.badge_color}>{project.client}</ProjectBadge>
+            <ProjectBadge seed={project.slug} colorIndex={project.badge_color}>{project.type}</ProjectBadge>
             <NeutralBadge>{project.year}</NeutralBadge>
           </div>
         </header>
 
-        <div className="relative w-full aspect-[16/10] bg-ink mb-10">
+        <div className="relative w-full aspect-[16/10] bg-charcoal mb-10">
           {project.cover_image ? (
             isVideoUrl(project.cover_image) ? (
               <video

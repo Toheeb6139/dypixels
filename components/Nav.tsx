@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Nav() {
   return (
@@ -30,6 +31,7 @@ export function Nav() {
         >
           Say hi
         </Link>
+        <ThemeToggle />
       </nav>
     </header>
   );

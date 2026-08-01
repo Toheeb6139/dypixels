@@ -92,7 +92,7 @@ export function ProjectGallery({
                   type="button"
                   onClick={() => setOpenUrl(item.url)}
                   aria-label={`View ${projectTitle} detail full size`}
-                  className={`relative w-full block p-0 m-0 border-0 bg-ink cursor-pointer overflow-hidden ${
+                  className={`relative w-full block p-0 m-0 border-0 bg-charcoal cursor-pointer overflow-hidden ${
                     COL_SPAN[item.layout]
                   } ${item.layout === "full" ? "aspect-[16/9]" : "aspect-[4/5]"}`}
                 >
@@ -134,7 +134,7 @@ export function ProjectGallery({
           in the top-right corner on desktop. */}
       {openItem && (
         <div
-          className="fixed inset-0 z-50 bg-ink/95 flex flex-col md:items-center md:justify-center"
+          className="fixed inset-0 z-50 bg-charcoal/95 flex flex-col md:items-center md:justify-center"
           onClick={() => setOpenUrl(null)}
         >
           <div

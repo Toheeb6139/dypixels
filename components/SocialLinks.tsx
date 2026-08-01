@@ -49,7 +49,7 @@ export function SocialLinks({
             style={{ "--tilt": `${tilts[i % tilts.length]}deg` } as CSSProperties}
             className={`docket inline-block font-mono uppercase tracking-wider transition-colors ${
               inverted
-                ? "docket-inverted bg-transparent text-paper hover:text-spark"
+                ? "docket-inverted bg-transparent text-cream hover:text-spark"
                 : "bg-paper text-ink hover:text-flash"
             } ${compact ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"}`}
           >

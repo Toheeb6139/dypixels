@@ -7,6 +7,7 @@ import { Project, ProjectInput, Lead, GalleryItem, GalleryMediaItem } from "@/li
 import { normalizeGallery } from "@/lib/gallery";
 import { isVideoUrl } from "@/lib/media";
 import { supabase } from "@/lib/supabase";
+import { ACCENTS } from "@/lib/theme";
 import {
   createProject,
   updateProject,
@@ -41,6 +42,7 @@ const emptyDraft: Partial<ProjectInput> = {
   featured: false,
   published: false,
   sort_order: 999,
+  badge_color: null,
 };
 
 export function DashboardClient({
@@ -315,6 +317,11 @@ function ProjectForm({
     await autoSave({ featured: checked });
   }
 
+  async function handleBadgeColorChange(index: number | null) {
+    set("badge_color", index);
+    await autoSave({ badge_color: index });
+  }
+
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -493,7 +500,7 @@ function ProjectForm({
       </div>
       {form.cover_image && (
         <div className="flex items-center gap-2 mt-1">
-          <div className="relative w-10 h-10 shrink-0 bg-ink overflow-hidden">
+          <div className="relative w-10 h-10 shrink-0 bg-charcoal overflow-hidden">
             {isVideoUrl(form.cover_image) ? (
               <video
                 src={form.cover_image}
@@ -600,7 +607,7 @@ function ProjectForm({
                   disableUp={i === 0}
                   disableDown={i === (form.gallery ?? []).length - 1}
                 />
-                <div className="relative w-10 h-10 shrink-0 bg-ink overflow-hidden">
+                <div className="relative w-10 h-10 shrink-0 bg-charcoal overflow-hidden">
                   {isVideoUrl(item.url) ? (
                     <video
                       src={item.url}
@@ -652,6 +659,44 @@ function ProjectForm({
           )}
         </ul>
       )}
+
+      <label className={labelClass}>Badge color</label>
+      <p className="font-mono text-[10px] text-mute mb-1">
+        Client and type badges use this color everywhere the project
+        appears. Leave on Auto for a consistent color picked from the
+        project's slug, or choose one yourself.
+      </p>
+      <div className="flex items-center gap-2 flex-wrap">
+        <button
+          type="button"
+          onClick={() => handleBadgeColorChange(null)}
+          className={`font-mono text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full border ${
+            form.badge_color === null || form.badge_color === undefined
+              ? "border-ink"
+              : "border-line text-mute"
+          }`}
+        >
+          Auto
+        </button>
+        {ACCENTS.map((accent, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => handleBadgeColorChange(i)}
+            aria-label={accent.name}
+            title={accent.name}
+            className={`w-7 h-7 rounded-full border-2 ${
+              form.badge_color === i ? "border-ink" : "border-transparent"
+            }`}
+            style={{ backgroundColor: accent.bg }}
+          >
+            <span
+              className="block w-full h-full rounded-full"
+              style={{ boxShadow: `inset 0 0 0 2px ${accent.text}` }}
+            />
+          </button>
+        ))}
+      </div>
 
       <div className="flex items-center gap-6 mt-5">
         <label className="font-mono text-xs flex items-center gap-2">

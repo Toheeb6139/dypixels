@@ -28,7 +28,7 @@ export function CoverPlaceholder({
 
   return (
     <div
-      className="relative w-full h-full flex items-center justify-center overflow-hidden"
+      className="relative w-full h-full flex items-center justify-center overflow-hidden ring-1 ring-inset ring-cream/10"
       style={{ backgroundColor: bg, color: fg }}
     >
       <span
