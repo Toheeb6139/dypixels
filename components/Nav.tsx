@@ -7,14 +7,22 @@ export function Nav() {
     <header className="w-full px-4 sm:px-6 md:px-10 py-4 md:py-6 flex items-center justify-between gap-3">
       <Link
         href="/"
-        className="inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"
+        className="relative inline-flex items-center shrink-0 hover:opacity-80 transition-opacity"
       >
         <Image
           src="/logo-mark.png"
           alt="dypixels"
           width={48}
           height={48}
-          className="h-10 w-10 sm:h-12 sm:w-12"
+          className="h-10 w-10 sm:h-12 sm:w-12 dark:hidden"
+          priority
+        />
+        <Image
+          src="/logo-mark-dark.png"
+          alt="dypixels"
+          width={48}
+          height={48}
+          className="hidden dark:block h-10 w-10 sm:h-12 sm:w-12"
           priority
         />
       </Link>
