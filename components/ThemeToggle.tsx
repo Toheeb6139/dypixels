@@ -23,11 +23,11 @@ export function ThemeToggle() {
     window.localStorage.setItem(STORAGE_KEY, next ? "dark" : "light");
   }
 
-  // Avoid rendering a possibly-wrong label before we've synced with
-  // the actual applied class (prevents a one-frame flash of "Light"
-  // for someone who's actually in dark mode).
+  // Avoid rendering a possibly-wrong icon before we've synced with the
+  // actual applied class (prevents a one-frame flash of the wrong
+  // icon for someone who's actually in dark mode).
   if (!mounted) {
-    return <span className="inline-block w-[52px] h-[26px]" aria-hidden="true" />;
+    return <span className="inline-block w-[34px] h-[30px]" aria-hidden="true" />;
   }
 
   return (
@@ -36,9 +36,38 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="Toggle dark mode"
       aria-pressed={isDark}
-      className="docket px-2.5 py-1.5 font-mono text-[10px] sm:text-xs uppercase tracking-wider hover:text-flash transition-colors"
+      className="docket p-1.5 hover:text-flash transition-colors"
     >
-      {isDark ? "Dark" : "Light"}
+      {isDark ? (
+        // moon
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      ) : (
+        // sun
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="4.5" />
+          <path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+        </svg>
+      )}
     </button>
   );
 }

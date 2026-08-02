@@ -9,10 +9,10 @@ export function Footer() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-cream/70 mb-3">
-            Currently — open for work
+            Available for select projects
           </p>
           <h2 className="font-display font-extrabold text-3xl md:text-5xl max-w-lg leading-[1.05]">
-            Got a brand that needs an <span className="text-spark">outfit</span>?
+            Good ideas deserve good <span className="text-spark">branding.</span>
           </h2>
         </div>
 
@@ -23,7 +23,7 @@ export function Footer() {
 
       <div className="flex items-center justify-between mt-16 flex-wrap gap-4">
         <p className="font-mono text-[11px] text-cream/60">
-          dypixels — Lagos, NG. © {new Date().getFullYear()}. Built by hand, not by template.
+          dypixels • Nigeria • ©{new Date().getFullYear()}
         </p>
       </div>
     </footer>

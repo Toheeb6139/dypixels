@@ -31,27 +31,28 @@ export default async function Home() {
 
         <section className="md:flex-1 flex flex-col justify-center px-6 md:px-10 py-10 md:py-6">
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
-            Brand &amp; visual identity designer, based in Lagos, Nigeria — open for work
+            Research • Strategy • Identity • Execution
           </p>
 
-          {/* Mobile: forced 4-line break. Desktop: natural flow */}
+          {/* Mobile: forced line breaks. Desktop: natural flow */}
           <h1 className="font-display font-extrabold text-[clamp(2.6rem,8vw,5.5rem)] leading-[1.02] tracking-[-0.03em] max-w-4xl">
             <span className="md:hidden">
-              I design
+              Good brands
               <br />
-              <span className="text-flash">brands</span>
+              get noticed.
               <br />
-              that get
+              Great ones get
               <br />
-              remembered.
+              <span className="text-flash">remembered.</span>
             </span>
             <span className="hidden md:inline">
-              I design <span className="text-flash">brands</span> that get remembered.
+              Good brands get noticed. Great ones get{" "}
+              <span className="text-flash">remembered.</span>
             </span>
           </h1>
 
           <p className="font-body text-lg md:text-xl max-w-xl mt-6 md:mt-8 text-ink/80 leading-relaxed">
-            I design the identity, the visuals, the whole outfit.
+            I help ambitious brands become the second kind.
           </p>
         </section>
 
@@ -86,15 +87,14 @@ export default async function Home() {
       <Reveal>
         <section className="px-6 md:px-10 py-16 md:py-24 border-t border-line">
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-4">
-            A little about the person behind the tag
+            Beyond the work
           </p>
           <a
             href="/about"
             className="font-display text-3xl md:text-5xl leading-tight hover:text-flash transition-colors inline-block max-w-2xl"
-           
           >
             I studied engineering, then decided brands needed me more than
-            circuits did. Here's the rest of the story →
+            circuits did. Here's the story. →
           </a>
         </section>
       </Reveal>
