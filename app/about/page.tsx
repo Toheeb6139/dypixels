@@ -10,14 +10,14 @@ export default function About() {
 
       <section className="px-6 md:px-10 py-12 md:py-20">
         <p className="font-mono text-xs uppercase tracking-widest text-mute mb-6">
-          The person behind the tag
+          Who's behind this?
         </p>
 
         <h1
           className="font-display text-4xl md:text-6xl max-w-3xl leading-[1.02] mb-6"
         >
-          I'm Toheeb — <span className="text-flash font-extrabold">dypixels</span> is
-          just what I call it when I'm working.
+          Behind <span className="text-flash font-extrabold">dypixels</span> is
+          just me. Hi, I'm Toheeb.
         </h1>
 
         <a
@@ -35,24 +35,24 @@ export default function About() {
             <p>
               I'm finishing a degree in Electronic and Computer Engineering
               at Lagos State University. It's the kind of course that
-              teaches you to care whether a thing actually works before
-              you worry about whether it looks good. Design pulled me in
-              around 2022, and the two habits agree more than I expected.
+              teaches you to care whether something actually works before
+              worrying about whether it looks good. Design found me in
+              2022, and the two have been getting along ever since.
             </p>
             <p>
-              Most of my work sits in brand identity and concept-driven
-              campaigns, logo through launch. I can hold a visual system
-              together at scale (RARK's Ramadan campaign ran for months
-              without drifting off-brand), and I can land a single sharp
-              idea fast (concept ads for brands like Colgate and
-              Starlink). One of those ideas, a Halloween reimagining of
-              Levi's, won the Deestinct Halloween Rebrand Challenge in 2025.
+              Most of my work lives at the intersection of brand identity,
+              campaign design, and visual systems. I enjoy turning rough
+              ideas into clear identities, and building creative systems
+              that stay consistent long after launch. Whether it's a logo,
+              a campaign, or a social rollout, I'm usually thinking about
+              the bigger picture.
             </p>
             <p>
-              I work fast, mostly solo, and currently lead design for
-              DesigNation alongside client work. I lean on AI-assisted
-              tools with Photoshop, Illustrator, and Figma. Got a brand
-              that needs an outfit? I'd love to help.
+              These days, I lead design at DesigNation while working with
+              brands on identity and campaign projects. My toolkit leans
+              on Photoshop, Illustrator, Figma, and AI where it makes
+              sense. The goal is never to design more. It's to design
+              better.
             </p>
           </div>
 
@@ -63,13 +63,13 @@ export default function About() {
               <p className="text-mute uppercase tracking-wider text-xs mb-2">
                 Based in
               </p>
-              <p>Epe, Lagos State</p>
+              <p>Lagos, Nigeria</p>
             </div>
             <div>
               <p className="text-mute uppercase tracking-wider text-xs mb-2">
                 Focus
               </p>
-              <p>Brand identity, campaign &amp; concept advertising, social systems</p>
+              <p>Brand Identity, Visual Systems, Concept-led Campaigns</p>
             </div>
             <div>
               <p className="text-mute uppercase tracking-wider text-xs mb-2">
