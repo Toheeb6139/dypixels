@@ -93,6 +93,16 @@ Until Supabase is connected, it falls back to opening a pre-filled
 email instead — so it's never broken, just less convenient until step
 5 above is done.
 
+**Email notification on new leads (optional but recommended):**
+1. Sign up free at [resend.com](https://resend.com), grab an API key
+   from the dashboard (no domain setup needed to start).
+2. Add `RESEND_API_KEY` in Vercel's environment variables, redeploy.
+3. Every new contact form submission now also emails
+   `dypixels.official@gmail.com` directly, in addition to saving in
+   `/admin` — so you don't have to remember to check the dashboard.
+   Replying to that email replies straight to the person who submitted
+   the form.
+
 ## Asset checklist — what I need from you per project
 
 For each project you want live, send me (or fill in directly via

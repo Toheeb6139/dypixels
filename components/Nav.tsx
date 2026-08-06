@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
+import { HomeLink } from "./HomeLink";
 
 export function Nav() {
   return (
@@ -27,6 +28,7 @@ export function Nav() {
         />
       </Link>
       <nav className="flex items-center gap-3 sm:gap-5 md:gap-6 font-mono text-[10px] sm:text-xs uppercase tracking-wider">
+        <HomeLink />
         <Link href="/#work" className="hover:text-flash transition-colors">
           Work
         </Link>

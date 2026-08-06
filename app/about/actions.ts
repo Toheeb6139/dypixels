@@ -4,6 +4,35 @@ import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { isSupabaseConfigured } from "@/lib/projects";
 
+const NOTIFY_EMAIL = "dypixels.official@gmail.com";
+
+// Best-effort — a failed notification should never break lead
+// submission itself (the lead is already safely saved in Supabase and
+// visible in /admin regardless of whether this email goes out).
+async function sendLeadNotification(data: { name: string; email: string; message: string }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "dypixels site <onboarding@resend.dev>",
+        to: NOTIFY_EMAIL,
+        reply_to: data.email,
+        subject: `New inquiry from ${data.name}`,
+        text: `${data.message}\n\n— ${data.name} (${data.email})\n\nView all leads: ${process.env.NEXT_PUBLIC_SITE_URL || "https://dypixels.vercel.app"}/admin/dashboard`,
+      }),
+    });
+  } catch {
+    // Swallow — see comment above.
+  }
+}
+
 export async function submitLead(data: {
   name: string;
   email: string;
@@ -30,5 +59,6 @@ export async function submitLead(data: {
   }
 
   revalidatePath("/admin/dashboard");
+  await sendLeadNotification(data);
   return { ok: true };
 }

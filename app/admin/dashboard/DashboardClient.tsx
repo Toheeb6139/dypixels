@@ -529,7 +529,8 @@ function ProjectForm({
       <label className={labelClass}>Gallery (optional — extra shots on the project page)</label>
       <p className="font-mono text-[10px] text-mute mb-1">
         Select multiple files at once if you like. Choose how many sit
-        in a row: Full (1), Half (2), Third (3), or Quarter (4). Shown
+        in a row: Full (1), Half (2), Third (3), or Quarter (4 on
+        desktop, 2 on mobile — stays readable on small screens). Shown
         as a tight cropped grid — click any image on the live site to
         see the complete, uncropped version. Add a text block to break
         up the images with a heading and paragraph, Behance-style.

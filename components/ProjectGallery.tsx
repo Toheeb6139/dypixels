@@ -6,12 +6,14 @@ import { GalleryItem, GalleryMediaItem } from "@/lib/types";
 import { isVideoUrl } from "@/lib/media";
 
 // How many columns (of 12) each layout choice spans — full = 1 per
-// row, half = 2, third = 3, quarter = 4.
+// row, half = 2, third = 3, quarter = 4 (2 on mobile, where 4-per-row
+// was too small to make out — full 4-per-row kicks in at desktop
+// widths where there's actually room for it).
 const COL_SPAN: Record<GalleryMediaItem["layout"], string> = {
   full: "col-span-12",
   half: "col-span-6",
   third: "col-span-4",
-  quarter: "col-span-3",
+  quarter: "col-span-6 md:col-span-3",
 };
 
 export function ProjectGallery({

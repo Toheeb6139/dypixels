@@ -26,7 +26,7 @@ export default async function Home() {
           stretch — content sits with natural, compact spacing instead
           of being centered in a tall box (which was leaving big empty
           gaps above and below the text on phones). */}
-      <div className="md:min-h-screen md:min-h-[100dvh] flex flex-col">
+      <div className="md:min-h-screen md:min-h-[100dvh] md:max-h-[1100px] flex flex-col">
         <Nav />
 
         <section className="md:flex-1 flex flex-col justify-center px-6 md:px-10 py-10 md:py-6">

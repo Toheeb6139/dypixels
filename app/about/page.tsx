@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { SocialLinks } from "@/components/SocialLinks";
 import { ContactForm } from "@/components/ContactForm";
+
+export const metadata: Metadata = {
+  title: "About — dypixels",
+  description:
+    "Toheeb, a.k.a dypixels — a Lagos-based brand and visual identity designer. Engineering background, design-first practice.",
+};
 
 export default function About() {
   return (
@@ -96,6 +103,10 @@ export default function About() {
             Tell me what you're working on.
           </h2>
           <ContactForm />
+          <p className="font-mono text-[11px] text-mute mt-4 max-w-md">
+            Your details are only used to reply to you — never shared,
+            sold, or used for anything else.
+          </p>
         </div>
       </section>
 

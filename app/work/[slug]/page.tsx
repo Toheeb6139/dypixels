@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CoverPlaceholder } from "@/components/CoverPlaceholder";
@@ -15,6 +16,31 @@ import { ProjectBadge, NeutralBadge } from "@/components/ProjectBadge";
 // showing immediately) matters far more than static-generation speed
 // for a portfolio site's traffic level.
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const project = await getProjectBySlug(params.slug);
+  if (!project) return { title: "Project not found — dypixels" };
+
+  const title = `${project.title} — dypixels`;
+  const description = project.summary;
+  // Videos can't be OG images — fall back to the site default banner
+  // rather than pointing a link preview at a video file.
+  const ogImage =
+    project.cover_image && !isVideoUrl(project.cover_image)
+      ? project.cover_image
+      : "/og-banner.png";
+
+  return {
+    title,
+    description,
+    openGraph: { title, description, images: [{ url: ogImage }], type: "article" },
+    twitter: { card: "summary_large_image", title, description, images: [ogImage] },
+  };
+}
 
 export default async function ProjectPage({
   params,
