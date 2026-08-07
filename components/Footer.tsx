@@ -21,8 +21,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-16 flex-wrap gap-4">
-        <p className="font-mono text-[11px] text-cream/60">
+      <div className="flex items-center justify-center mt-16">
+        <p className="font-mono text-[11px] text-cream/60 text-center">
           dypixels • Nigeria • ©{new Date().getFullYear()}
         </p>
       </div>

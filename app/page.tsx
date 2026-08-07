@@ -21,17 +21,17 @@ export default async function Home() {
 
   return (
     <>
-      {/* Fixed, deterministic spacing — no viewport-height math (100vh/
-          100dvh/min-h-screen), on purpose. That approach kept breaking
-          in edge cases like Chrome's "Desktop site" mode on a phone,
-          where reported viewport dimensions don't behave predictably.
-          Trades "ticker pixel-perfect at the screen's bottom edge" for
-          "renders correctly everywhere, always." */}
-      <div className="flex flex-col">
+      {/* Ticker pins to the bottom of the screen on real desktop (see
+          .hero-fill-* rules in globals.css, gated on hover+pointer so
+          "Desktop site" mode on a phone — which is wide but still
+          touch-only — doesn't trigger it and create a huge gap there).
+          Elsewhere, these classes are inert and the fixed padding
+          below is what's actually shown. */}
+      <div className="hero-fill-wrap flex flex-col">
         <Nav />
 
-        <section className="flex flex-col justify-center px-6 md:px-10 py-16 md:py-28">
-          <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
+        <section className="hero-fill-section flex flex-col justify-center px-6 md:px-10 py-16 md:py-28">
+          <p className="font-mono text-[9px] sm:text-xs uppercase tracking-wide sm:tracking-widest text-mute mb-2 md:mb-3 whitespace-nowrap">
             Research • Strategy • Identity • Execution
           </p>
 

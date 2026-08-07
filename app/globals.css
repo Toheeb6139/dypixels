@@ -24,6 +24,29 @@
   --color-line: #313138;
 }
 
+/* Hero fill — pins the ticker to the bottom of the first screen, but
+   ONLY on genuine desktop/laptop devices (mouse + hover). Chrome's
+   "Request desktop site" on a phone reports a desktop-width viewport
+   but is still a touch device with no hover — this targets the real
+   signal (pointer/hover), not viewport width, which can be spoofed by
+   that mode and previously caused a huge layout gap there. Below this
+   media query, .hero-fill-* elements just use their normal (fixed
+   padding) styles from page.tsx — this only overrides at genuine
+   desktop. */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .hero-fill-wrap {
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: 1200px;
+  }
+  .hero-fill-section {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
