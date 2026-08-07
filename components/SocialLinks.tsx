@@ -65,7 +65,7 @@ export function SocialLinks({
               inverted
                 ? "docket-inverted bg-transparent text-cream hover:text-spark"
                 : "bg-paper text-ink hover:text-flash"
-            } ${compact ? "w-8 h-8" : "w-9 h-9"}`}
+            } ${compact ? "w-9 h-9" : "w-11 h-11"}`}
           >
             <s.Icon />
           </a>

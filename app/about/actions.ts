@@ -8,13 +8,19 @@ const NOTIFY_EMAIL = "dypixels.official@gmail.com";
 
 // Best-effort — a failed notification should never break lead
 // submission itself (the lead is already safely saved in Supabase and
-// visible in /admin regardless of whether this email goes out).
+// visible in /admin regardless of whether this email goes out). Does
+// log failures to the server console (visible in Vercel's function
+// logs) so a misconfiguration is actually discoverable instead of
+// silently vanishing.
 async function sendLeadNotification(data: { name: string; email: string; message: string }) {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return;
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not set — skipping lead notification email.");
+    return;
+  }
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -28,8 +34,16 @@ async function sendLeadNotification(data: { name: string; email: string; message
         text: `${data.message}\n\n— ${data.name} (${data.email})\n\nView all leads: ${process.env.NEXT_PUBLIC_SITE_URL || "https://dypixels.vercel.app"}/admin/dashboard`,
       }),
     });
-  } catch {
-    // Swallow — see comment above.
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      console.error(
+        `Resend notification failed (${res.status}): ${body}. ` +
+          `Note: onboarding@resend.dev can only deliver to the exact email address your Resend account was signed up with, until a real domain is verified.`
+      );
+    }
+  } catch (err) {
+    console.error("Resend notification threw:", err);
   }
 }
 

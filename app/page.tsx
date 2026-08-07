@@ -21,15 +21,16 @@ export default async function Home() {
 
   return (
     <>
-      {/* Desktop: Nav + Hero + Ticker together fill exactly one screen,
-          ticker pinned to the bottom edge. Mobile: no forced full-height
-          stretch — content sits with natural, compact spacing instead
-          of being centered in a tall box (which was leaving big empty
-          gaps above and below the text on phones). */}
-      <div className="md:min-h-screen md:min-h-[100dvh] md:max-h-[1100px] flex flex-col">
+      {/* Fixed, deterministic spacing — no viewport-height math (100vh/
+          100dvh/min-h-screen), on purpose. That approach kept breaking
+          in edge cases like Chrome's "Desktop site" mode on a phone,
+          where reported viewport dimensions don't behave predictably.
+          Trades "ticker pixel-perfect at the screen's bottom edge" for
+          "renders correctly everywhere, always." */}
+      <div className="flex flex-col">
         <Nav />
 
-        <section className="md:flex-1 flex flex-col justify-center px-6 md:px-10 py-10 md:py-6">
+        <section className="flex flex-col justify-center px-6 md:px-10 py-16 md:py-28">
           <p className="font-mono text-xs uppercase tracking-widest text-mute mb-2 md:mb-3">
             Research • Strategy • Identity • Execution
           </p>

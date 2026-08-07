@@ -66,11 +66,12 @@ export default function RootLayout({
             __html: `(function(){try{var s=localStorage.getItem('dypixels-theme');var d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
           }}
         />
-        {/* Adaptive favicon — light icon for light browser chrome, white
-            icon for dark. Falls back to app/icon.png (the light/blue
-            version) anywhere this isn't supported. */}
-        <link rel="icon" href="/favicon-light.png" media="(prefers-color-scheme: light)" />
-        <link rel="icon" href="/favicon-dark.png" media="(prefers-color-scheme: dark)" />
+        {/* One favicon everywhere — the adaptive light/dark version
+            wasn't reliably respected on mobile Chrome, so this is the
+            white icon (same one used in dark mode) regardless of
+            device theme. Worth knowing: on a light browser tab bar,
+            a white icon has low contrast — flag if that's an issue. */}
+        <link rel="icon" href="/favicon-dark.png" />
       </head>
       <body className="font-body bg-paper text-ink antialiased">
         <BackToTop />
