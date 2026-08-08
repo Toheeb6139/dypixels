@@ -35,13 +35,13 @@
    desktop. */
 @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .hero-fill-wrap {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     min-height: 100vh;
     min-height: 100dvh;
     max-height: 1200px;
   }
   .hero-fill-section {
-    flex: 1 1 auto;
-    justify-content: center;
     padding-top: 0;
     padding-bottom: 0;
   }

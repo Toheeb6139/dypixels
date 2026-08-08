@@ -101,7 +101,7 @@ export default async function ProjectPage({
           )}
         </div>
 
-        <div className="max-w-2xl font-body text-lg leading-relaxed whitespace-pre-line text-ink/85">
+        <div className="max-w-3xl font-body text-lg leading-relaxed whitespace-pre-line text-ink/85">
           {project.description}
         </div>
 
