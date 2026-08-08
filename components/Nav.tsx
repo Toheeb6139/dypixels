@@ -15,7 +15,7 @@ export function Nav() {
           alt="dypixels"
           width={48}
           height={48}
-          className="h-[42px] w-[42px] sm:h-[50px] sm:w-[50px] dark:hidden"
+          className="h-10 w-10 sm:h-12 sm:w-12 dark:hidden"
           priority
         />
         <Image

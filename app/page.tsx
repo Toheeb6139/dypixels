@@ -21,16 +21,18 @@ export default async function Home() {
 
   return (
     <>
-      {/* Ticker pins to the bottom of the screen on real desktop (see
-          .hero-fill-* rules in globals.css, gated on hover+pointer so
-          "Desktop site" mode on a phone — which is wide but still
-          touch-only — doesn't trigger it and create a huge gap there).
-          Elsewhere, these classes are inert and the fixed padding
-          below is what's actually shown. */}
-      <div className="hero-fill-wrap flex flex-col">
+      {/* Mobile: normal flow, fixed padding, nothing pinned. Desktop
+          (md+): grid with the middle row flexible, so the ticker
+          always sits at the bottom of the first screen. Width-gated
+          only — no hover/pointer detection, since that wasn't
+          reliably matching on real hardware. Trade-off: "Request
+          desktop site" on a phone will get the desktop treatment too
+          and may need a scroll to see the ticker, same as any real
+          desktop-width view. */}
+      <div className="flex flex-col md:grid md:grid-rows-[auto_1fr_auto] md:min-h-screen md:min-h-[100dvh] md:max-h-[1200px]">
         <Nav />
 
-        <section className="hero-fill-section flex flex-col justify-center px-6 md:px-10 py-16 md:py-28">
+        <section className="flex flex-col justify-center px-6 md:px-10 py-16 md:py-0">
           <p className="font-mono text-[9px] sm:text-xs uppercase tracking-wide sm:tracking-widest text-mute mb-2 md:mb-3 whitespace-nowrap">
             Research • Strategy • Identity • Execution
           </p>
